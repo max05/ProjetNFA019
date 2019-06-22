@@ -9,12 +9,13 @@ public class Personne {
 	private String cp;
 	private String ville;
 	private String tel;
+	private int id;
 	
 	public Personne() {
 		
 	}
 	
-	public Personne(String pNom , String pPrenom , String pMail , String pAdresse , String pCp , String pVille , String pTel){
+	public Personne(String pNom , String pPrenom , String pMail , String pAdresse , String pCp , String pVille , String pTel , int pId){
 		this.nom = pNom;
 		this.prenom = pPrenom;
 		this.mail = pMail;
@@ -22,11 +23,12 @@ public class Personne {
 		this.cp = pCp;
 		this.ville = pVille;
 		this.tel = pTel;
+		this.id = pId;
 		
 	}
 	
 	public String toString() {
-		return this.nom+","+this.prenom+","+this.adresse+","+this.cp+","+this.ville+","+this.tel+","+this.mail;
+		return this.nom+","+this.prenom+","+this.adresse+","+this.cp+","+this.ville+","+this.tel+","+this.mail+","+this.id;
 	}
 
 	public String getNom() {
@@ -83,6 +85,14 @@ public class Personne {
 
 	public void setTel(String tel) {
 		this.tel = tel;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 }

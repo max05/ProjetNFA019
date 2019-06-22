@@ -11,6 +11,9 @@ import javax.swing.JTextField;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.border.TitledBorder;
+
+import fr.gestion.rdv.Connexion;
+
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import java.awt.FlowLayout;
@@ -29,6 +32,7 @@ public class SessionMedecin {
 	private JFrame frame;
 	private JTextField textField_rechercherConsultation;
 	private JTextField textField_rechercherDiagnostic;
+	Connexion uneConnexion = new Connexion();
 
 	/**
 	 * Launch the application.
@@ -57,6 +61,7 @@ public class SessionMedecin {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		
 		frame = new JFrame();
 		frame.getContentPane().setForeground(new Color(0, 0, 0));
 		frame.setBounds(100, 100, 800, 600);
