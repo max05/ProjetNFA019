@@ -11,7 +11,7 @@ public class MethodesSql {
 	
 	public static void ajouterMedecin(Connection conn , String pNom , String pPrenom , String pMail , String pAdresse , String pVille , String pCp , String pTel , int pSpecialite ) {
 		try {
-			prep = conn.prepareStatement("insert into medecin (nomM , prenomM , mailM , adresseM , villeM , cpM , telM , id_specialite) values (?,?,?,?,?,?,?)");
+			prep = conn.prepareStatement("insert into medecin (nomM , prenomM , mailM , adresseM , villeM , cpM , telM , id_specialite) values (?,?,?,?,?,?,?,?)");
 			prep.setString(1, pNom);
 			prep.setString(2, pPrenom);
 			prep.setString(3, pMail);
@@ -19,7 +19,7 @@ public class MethodesSql {
 			prep.setString(5, pVille);
 			prep.setString(6, pCp);
 			prep.setString(7, pTel);
-			//prep.setInt(8, pSpecialite);
+			prep.setInt(8, pSpecialite);
 			prep.executeUpdate();
 			prep.close();
 		} catch (SQLException ex) {
@@ -131,7 +131,7 @@ public class MethodesSql {
 		ResultSet res = null;
 		try {
 			Statement statemment = conn.createStatement();
-			res = statemment.executeQuery("select nomM , prenomM , mailM , adresseM , villeM , cpM , telM from medecin inner join specialite on medecin.id_specialite = specialite.id_specialite where id_medecin ="+"'"+pId+"'");
+			res = statemment.executeQuery("select nomM , prenomM , mailM , adresseM , villeM , cpM , telM , s.intitule from medecin inner join specialite s on medecin.id_specialite = s.id_specialite where id_medecin ="+"'"+pId+"'");
 			
 			
 			
@@ -168,7 +168,7 @@ public class MethodesSql {
 		} catch(SQLException ex) {
 			System.out.println("SQLException : "+ex.getMessage());
 			System.out.println("SQLState : "+((SQLException)ex).getSQLState());
-			System.out.println("VendorError : "+((SQLException)ex).getErrorCode());
+			System.out.println("VendorError : "+((SQLException)ex).getErrorCode()); 
 		} finally {
 			return res;
 		}
@@ -179,7 +179,22 @@ public class MethodesSql {
 		ResultSet res = null;
 		try {
 			Statement st = conn.createStatement();
-			res = st.executeQuery("select id_medecin , nomM , prenomM , mailM , adresseM , villeM , cpM , telM , id_specialite inner join specialite on medecin.id_specialite = specialite.id_specialite ");
+			res = st.executeQuery("select id_medecin , nomM , prenomM , mailM , adresseM , villeM , cpM , telM , s.intitule from medecin inner join specialite s on medecin.id_specialite = s.id_specialite");
+			
+		}catch(SQLException ex) {
+			System.out.println("SQLException : "+ex.getMessage());
+			System.out.println("SQLState : "+((SQLException)ex).getSQLState());
+			System.out.println("VendorError : "+((SQLException)ex).getErrorCode());
+		} finally {
+			return res;
+		}
+	}
+	
+	public static ResultSet afficherSpecialite(Connection conn) {
+		ResultSet res = null;
+		try {
+			Statement st = conn.createStatement();
+			res = st.executeQuery("select intitule from specialite");
 			
 		}catch(SQLException ex) {
 			System.out.println("SQLException : "+ex.getMessage());

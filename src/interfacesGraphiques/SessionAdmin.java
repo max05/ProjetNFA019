@@ -54,11 +54,11 @@ public class SessionAdmin {
 	private JTextField textField_CodePostPatient;
 	private JTextField textField_nomMedecin;
 	private JTextField textField_prenomMedecin;
-	private JTextField textField_specialiteMedecin;
 	private JTextField textField_mailMedecin;
 	private JTextField textField_adrMedecin;
 	private JTextField textField_villeMedecin;
 	private JTextField textField_cpMedecin;
+	private JTextField textField_telMedecin;
 	private JTextField textField;
 	private Connexion uneConnexion = new Connexion();
 	private ArrayList<Patient> lstPatients = new ArrayList<Patient>();
@@ -67,6 +67,7 @@ public class SessionAdmin {
 	private Patient unPatient;
 	private int pSS, pId , pSpecialite;
 	private String pNom, pPrenom, pTel, pEmail, pAdresse, pVille, pCp;
+	private JTextField textField_telMedecin_1;
 
 	/**
 	 * Launch the application.
@@ -104,8 +105,11 @@ public class SessionAdmin {
 		frmEspaceAdministrateur.getContentPane().setLayout(null);
 		frmEspaceAdministrateur.setLocationRelativeTo(null);
 		JList list_1 = new JList();
+		JList list_2 = new JList();
+		JComboBox comboBox_medecin = new JComboBox();
 				
 		listePatient(list_1);
+		listeMedecin(list_2);
 		
 		list_1.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent arg0) {
@@ -121,6 +125,23 @@ public class SessionAdmin {
 				textField_VillePatient.setText(unPatient.getVille());
 				textField_EmailPatient.setText(unPatient.getMail());
 				textField_TelPatient.setText(unPatient.getTel());
+			}
+		});
+		
+		list_2.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent arg0) {
+				int i = list_2.getSelectedIndex();
+				unMedecin = lstMedecins.get(i);
+				pId = unMedecin.getId();
+				textField_nomMedecin.setText(unMedecin.getNom());
+				textField_prenomMedecin.setText(unMedecin.getPrenom());
+				textField_adrMedecin.setText(unMedecin.getAdresse());
+				textField_cpMedecin.setText(unMedecin.getCp());
+				textField_mailMedecin.setText(unMedecin.getMail());
+				textField_villeMedecin.setText(unMedecin.getVille());
+				textField_telMedecin_1.setText(unMedecin.getTel());
+				
+
 			}
 		});
 		JTabbedPane tabbedPane_1 = new JTabbedPane(JTabbedPane.TOP);
@@ -355,7 +376,7 @@ public class SessionAdmin {
 		scrollPane_2.setBounds(10, 21, 677, 138);
 		panel_1.add(scrollPane_2);
 
-		JList list_2 = new JList();
+
 		scrollPane_2.setViewportView(list_2);
 
 		JPanel panel_2 = new JPanel();
@@ -384,10 +405,20 @@ public class SessionAdmin {
 		lblSpcialite.setBounds(10, 104, 80, 30);
 		panel_2.add(lblSpcialite);
 
-		JComboBox comboBox_medecin = new JComboBox();
+
 		comboBox_medecin.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		comboBox_medecin.setModel(new DefaultComboBoxModel(new String[] { "M\u00E9decine g\u00E9n\u00E9rale",
-				"G\u00E9rontologie", "P\u00E9diatrie", "Psychologie", "Dermathologie", "Dentiste" }));
+		ResultSet resSpecialite = MethodesSql.afficherSpecialite(uneConnexion.getConnection());
+		try {
+			while(resSpecialite.next()) {
+				comboBox_medecin.addItem(resSpecialite.getString("intitule"));
+				
+			}
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+//		comboBox_medecin.setModel(new DefaultComboBoxModel(new String[] { "M\u00E9decine g\u00E9n\u00E9rale",
+//				"G\u00E9rontologie", "P\u00E9diatrie", "Psychologie", "Dermathologie", "Dentiste" }));
 		comboBox_medecin.setBounds(122, 106, 155, 30);
 		panel_2.add(comboBox_medecin);
 
@@ -408,11 +439,11 @@ public class SessionAdmin {
 		lblNrTel.setBounds(10, 155, 80, 30);
 		panel_2.add(lblNrTel);
 
-		textField_specialiteMedecin = new JTextField();
-		textField_specialiteMedecin.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		textField_specialiteMedecin.setColumns(10);
-		textField_specialiteMedecin.setBounds(122, 156, 155, 30);
-		panel_2.add(textField_specialiteMedecin);
+		textField_telMedecin_1 = new JTextField();
+		textField_telMedecin_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		textField_telMedecin_1.setColumns(10);
+		textField_telMedecin_1.setBounds(122, 156, 155, 30);
+		panel_2.add(textField_telMedecin_1);
 
 		JLabel lblEMail = new JLabel("e Mail :");
 		lblEMail.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -463,6 +494,12 @@ public class SessionAdmin {
 			public void actionPerformed(ActionEvent e) {
 			pNom = textField_nomMedecin.getText();
 			pPrenom = textField_prenomMedecin.getText();
+			pEmail = textField_mailMedecin.getText();
+			pAdresse = textField_adrMedecin.getText();
+			pVille = textField_villeMedecin.getText();
+			pCp = textField_cpMedecin.getText();
+			pTel = textField_telMedecin_1.getText();
+			pSpecialite = comboBox_medecin.getSelectedIndex();
 			
 			MethodesSql.ajouterMedecin(uneConnexion.getConnection(), pNom, pPrenom, pEmail, pAdresse, pVille, pCp, pTel, pSpecialite);
 			listeMedecin(list_2);
@@ -473,11 +510,33 @@ public class SessionAdmin {
 		panel_2.add(button_ajouterMedecin);
 
 		JButton button_supprimerMedecin = new JButton("Supprimer");
+		button_supprimerMedecin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MethodesSql.supprimerMedecin(uneConnexion.getConnection(), pId);
+				effacerTextMedecin();
+				listeMedecin(list_2);
+				
+			}
+		});
 		button_supprimerMedecin.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		button_supprimerMedecin.setBounds(498, 194, 110, 30);
 		panel_2.add(button_supprimerMedecin);
 
 		JButton button_modifierMedecin = new JButton("Modifier");
+		button_modifierMedecin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				pNom = textField_nomMedecin.getText();
+				pPrenom = textField_prenomMedecin.getText();
+				pEmail = textField_mailMedecin.getText();
+				pAdresse = textField_adrMedecin.getText();
+				pVille = textField_villeMedecin.getText();
+				pCp = textField_cpMedecin.getText();
+				pTel = textField_telMedecin_1.getText();
+				pSpecialite = comboBox_medecin.getSelectedIndex();
+				MethodesSql.modifierMedecin(uneConnexion.getConnection(), pNom, pPrenom, pEmail, pAdresse, pVille, pCp, pTel, pSpecialite, pId);
+				listeMedecin(list_2);
+			}
+		});
 		button_modifierMedecin.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		button_modifierMedecin.setBounds(333, 194, 101, 30);
 		panel_2.add(button_modifierMedecin);
@@ -508,7 +567,7 @@ public class SessionAdmin {
 				unMedecin.setVille(resM.getString("villeM"));
 				unMedecin.setCp(resM.getString("cpM"));
 				unMedecin.setTel(resM.getString("telM"));
-				unMedecin.setSpecialite(resM.getInt("id_specialite"));
+				unMedecin.setSpecialite(resM.getString("intitule"));
 				lstMedecins.add(unMedecin);
 			}
 			liste2.setListData(lstMedecins.toArray());
@@ -555,6 +614,17 @@ public class SessionAdmin {
 		textField_PrenomPatient.setText("");
 		textField_TelPatient.setText("");
 		textField_VillePatient.setText("");
+	}
+	
+	private void effacerTextMedecin() {
+		textField_adrMedecin.setText("");
+		textField_cpMedecin.setText("");
+		textField_mailMedecin.setText("");
+		textField_nomMedecin.setText("");
+		textField_prenomMedecin.setText("");
+		textField_telMedecin_1.setText("");
+		textField_villeMedecin.setText("");
+		
 	}
 
 }

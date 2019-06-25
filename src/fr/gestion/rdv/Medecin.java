@@ -2,7 +2,7 @@ package fr.gestion.rdv;
 
 public class Medecin extends Personne {
 	
-	private int specialite;
+	private String specialite;
 	
 	public Medecin() {
 		super();
@@ -15,16 +15,16 @@ public class Medecin extends Personne {
 	}
 
 	
-	public Medecin(int specialite) {
+	public Medecin(String specialite) {
 		super();
 		this.specialite = specialite;
 	}
 
-	public int getSpecialite() {
+	public String getSpecialite() {
 		return specialite;
 	}
 
-	public void setSpecialite(int specialite) {
+	public void setSpecialite(String specialite) {
 		this.specialite = specialite;
 	}
 
