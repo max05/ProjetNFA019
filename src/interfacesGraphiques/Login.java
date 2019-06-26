@@ -2,11 +2,17 @@ package interfacesGraphiques;
 
 import java.awt.EventQueue;
 import java.awt.Image;
+import java.sql.ResultSet;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+
+import fr.gestion.rdv.Connexion;
+import fr.gestion.rdv.MethodesSql;
+
 import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.Font;
@@ -18,6 +24,7 @@ public class Login {
 	private JFrame frame;
 	private JTextField textField;
 	private JPasswordField passwordFieldAuthentif;
+	private Connexion uneConnexion = new Connexion();
 
 	/**
 	 * Launch the application.
@@ -52,6 +59,7 @@ public class Login {
 		frame.setBounds(100, 100, 800, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		
 		
 		JLabel lblMerciDeVous = new JLabel("Merci de vous authentifier");
 		lblMerciDeVous.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -94,6 +102,14 @@ public class Login {
 		btnConnexion.setBounds(326, 461, 155, 30);
 		frame.getContentPane().add(btnConnexion);
 		
+		/**
+		 * Permet de regrouper les boutons et choisir une seule session utilisateur
+		 */
+		ButtonGroup group = new ButtonGroup();
+		group.add(adminButton);
+		group.add(patientButton);
+		group.add(medecinButton);
+		
 		//logo1
 		JLabel logoImage = new JLabel("");
 		logoImage.setBounds(31, 11, 113, 104);
@@ -111,9 +127,14 @@ public class Login {
       
 		frame.getContentPane().add(logoMedecine);
 		
+		if(adminButton.isSelected()) {
+			ResultSet resA = MethodesSql.afficherUser(uneConnexion.getConnection());
+		}
+		
+
+		
 		passwordFieldAuthentif = new JPasswordField();
 		passwordFieldAuthentif.setBounds(262, 281, 271, 30);
 		frame.getContentPane().add(passwordFieldAuthentif);
 	}
-
 }

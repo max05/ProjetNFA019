@@ -204,4 +204,20 @@ public class MethodesSql {
 			return res;
 		}
 	}
+	
+	public static ResultSet afficherUser(Connection conn) {
+		ResultSet res = null;
+		try {
+			Statement st = conn.createStatement();
+			res = st.executeQuery("select login , mdp , id_pma from user");
+			
+		}catch(SQLException ex) {
+			System.out.println("SQLException : "+ex.getMessage());
+			System.out.println("SQLState : "+((SQLException)ex).getSQLState());
+			System.out.println("VendorError : "+((SQLException)ex).getErrorCode());
+		} finally {
+			return res;
+		}
+	}
+	
 }

@@ -2,6 +2,9 @@ package interfacesGraphiques;
 
 import java.awt.EventQueue;
 import java.awt.Image;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
@@ -13,6 +16,9 @@ import javax.swing.JButton;
 import javax.swing.border.TitledBorder;
 
 import fr.gestion.rdv.Connexion;
+import fr.gestion.rdv.Medecin;
+import fr.gestion.rdv.MethodesSql;
+import fr.gestion.rdv.Patient;
 
 import javax.swing.JList;
 import javax.swing.JScrollPane;
@@ -32,6 +38,8 @@ public class SessionMedecin {
 	private JFrame frame;
 	private JTextField textField_rechercherConsultation;
 	private JTextField textField_rechercherDiagnostic;
+	private ArrayList<Patient> lstPatients = new ArrayList<Patient>();
+	private ArrayList<Medecin> lstMedecins = new ArrayList<Medecin>();
 	Connexion uneConnexion = new Connexion();
 
 	/**
@@ -67,6 +75,8 @@ public class SessionMedecin {
 		frame.setBounds(100, 100, 800, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		JList listPatients = new JList();
+		listePatient(listPatients);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -99,7 +109,7 @@ public class SessionMedecin {
 		scrollPane.setBounds(12, 23, 744, 132);
 		panel_4.add(scrollPane);
 		
-		JList listPatients = new JList();
+
 		scrollPane.setViewportView(listPatients);
 		
 		JPanel panel_infoPatient = new JPanel();
@@ -393,5 +403,34 @@ public class SessionMedecin {
 		lblEspaceMdecin.setBounds(10, 0, 133, 26);
 		frame.getContentPane().add(lblEspaceMdecin);
 	}
+
+	private void listePatient(JList liste1) {
+		lstPatients.clear();
+		ResultSet res = MethodesSql.afficherPatients(uneConnexion.getConnection());
+
+		try {
+			while (res.next()) {
+
+				Patient unPatient = new Patient();
+				unPatient.setId(res.getInt("id_patient"));
+				unPatient.setNom(res.getString("nomP"));
+				unPatient.setPrenom(res.getString("prenomP"));
+				unPatient.setTel(res.getString("telP"));
+				unPatient.setSexe(res.getString("sexeP"));
+				unPatient.setMail(res.getString("mailP"));
+				unPatient.setAdresse(res.getString("adresseP"));
+				unPatient.setVille(res.getString("villeP"));
+				unPatient.setCp(res.getString("cpP"));
+				lstPatients.add(unPatient);
+
+			}
+
+			liste1.setListData(lstPatients.toArray());
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+	
 
 }
