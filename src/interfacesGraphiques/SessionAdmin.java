@@ -595,6 +595,7 @@ public class SessionAdmin {
 				unPatient.setVille(res.getString("villeP"));
 				unPatient.setCp(res.getString("cpP"));
 				lstPatients.add(unPatient);
+				
 
 			}
 
