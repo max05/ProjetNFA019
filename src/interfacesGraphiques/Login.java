@@ -142,7 +142,7 @@ public class Login {
 				}
 
 				if (medecinButton.isSelected()) {
-					if(idPma >1000 ) {
+					
 						try {
 							SessionMedecin window = new SessionMedecin();
 							window.frameMedecin.setVisible(true);
@@ -152,9 +152,9 @@ public class Login {
 						}
 					}
 
-				}
+				
 
-				if (adminButton.isSelected() && idPma >= 9000) {
+				if (adminButton.isSelected() ) {
 
 					try {
 						SessionAdmin window = new SessionAdmin();
