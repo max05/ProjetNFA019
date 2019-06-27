@@ -40,6 +40,12 @@ import javax.swing.AbstractListModel;
 import java.awt.Font;
 import javax.swing.border.EtchedBorder;
 
+/**
+ * Fenêtre de la session administrateur ,
+ * il gère les patients et les medecins mais pas les demandes de rdv
+ * @author maxime , eric
+ *
+ */
 public class SessionAdmin {
 
 	public JFrame frmEspaceAdministrateur;
@@ -60,9 +66,9 @@ public class SessionAdmin {
 	private JTextField textField_cpMedecin;
 	private JTextField textField_telMedecin;
 	private JTextField textField;
-	private Connexion uneConnexion = new Connexion();
-	private ArrayList<Patient> lstPatients = new ArrayList<Patient>();
-	private ArrayList<Medecin> lstMedecins = new ArrayList<Medecin>();
+	private Connexion uneConnexion = new Connexion(); //Fait la connexion avec la bdd
+	private ArrayList<Patient> lstPatients = new ArrayList<Patient>(); //Stock dans un tableau les patients et permet de récuperer les infos
+	private ArrayList<Medecin> lstMedecins = new ArrayList<Medecin>();//Stock dans un tableau les medecins et permet de récuperer les infos
 	private Medecin unMedecin;
 	private Patient unPatient;
 	private int pSS, pId, pSpecialite;
@@ -91,6 +97,9 @@ public class SessionAdmin {
 	 */
 	private void initialize() {
 
+		/**
+		 * Création de la fenêtre espace administrateur
+		 */
 		frmEspaceAdministrateur = new JFrame();
 		frmEspaceAdministrateur.setResizable(false);
 		frmEspaceAdministrateur.setTitle("Espace administrateur");
@@ -98,10 +107,14 @@ public class SessionAdmin {
 		frmEspaceAdministrateur.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmEspaceAdministrateur.getContentPane().setLayout(null);
 		frmEspaceAdministrateur.setLocationRelativeTo(null);
-		JList list_2 = new JList();
-		JComboBox comboBox_medecin = new JComboBox();
-		listeMedecin(list_2);
+		JList list_2 = new JList(); //liste des medecins
+		JComboBox comboBox_medecin = new JComboBox(); //comboBox qui contient les spécialités des medecins
+		listeMedecin(list_2); //méthode qui affiche la liste des medecins via requête
 
+		/**
+		 * méthode qui permet de sélectionner un medecin via le clic de la souris et
+		 * affiche ses informations dans les différents textfield
+		 */
 		list_2.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent arg0) {
 				int i = list_2.getSelectedIndex();
@@ -116,20 +129,13 @@ public class SessionAdmin {
 				textField_telMedecin_1.setText(unMedecin.getTel());
 
 			}
-		});
+		}); //fin de la méthode
+		
 		JTabbedPane tabbedPane_1 = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		tabbedPane_1.setBounds(33, 38, 722, 514);
 		frmEspaceAdministrateur.getContentPane().add(tabbedPane_1);
 
-		/*
-		 * JScrollBar scrollBar = new JScrollBar(); scrollBar.setBounds(665, 32, 17,
-		 * 171); panel_Medecin.add(scrollBar);
-		 */
-		/*
-		 * panel_Patients.setBorder(new TitledBorder(null, "Fiche informations Patient",
-		 * TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		 */
 
 		JPanel panel_GestionMedecin = new JPanel();
 		panel_GestionMedecin.setBackground(new Color(204, 153, 255));
@@ -178,7 +184,11 @@ public class SessionAdmin {
 		lblSpcialite.setBounds(10, 104, 80, 30);
 		panel_2.add(lblSpcialite);
 
-		comboBox_medecin.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		/**
+		 * On récupère les spécialités via la méthode pour afficher les spécialité (via requête select) , 
+		 * puis insère dans la comboBox
+		 */
+		comboBox_medecin.setFont(new Font("Tahoma", Font.PLAIN, 14));		
 		ResultSet resSpecialite = MethodesSql.afficherSpecialite(uneConnexion.getConnection());
 		try {
 			while (resSpecialite.next()) {
@@ -189,8 +199,6 @@ public class SessionAdmin {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-//		comboBox_medecin.setModel(new DefaultComboBoxModel(new String[] { "M\u00E9decine g\u00E9n\u00E9rale",
-//				"G\u00E9rontologie", "P\u00E9diatrie", "Psychologie", "Dermathologie", "Dentiste" }));
 		comboBox_medecin.setBounds(122, 106, 155, 30);
 		panel_2.add(comboBox_medecin);
 
@@ -261,6 +269,10 @@ public class SessionAdmin {
 		textField_cpMedecin.setBounds(498, 156, 155, 30);
 		panel_2.add(textField_cpMedecin);
 
+		/**
+		 * Ajoute un medecin dans la base de donnée via une requête inscrit dans une méthode ,
+		 * on recupère les informations des textfield dans les variables pour l'insérer dans cette méthode
+		 */
 		JButton button_ajouterMedecin = new JButton("Ajouter ");
 		button_ajouterMedecin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -274,27 +286,36 @@ public class SessionAdmin {
 				pSpecialite = comboBox_medecin.getSelectedIndex();
 
 				MethodesSql.ajouterMedecin(uneConnexion.getConnection(), pNom, pPrenom, pEmail, pAdresse, pVille, pCp,
-						pTel, pSpecialite);
+						pTel, pSpecialite); //méthode qui ajoute un medecin dans la base de donnée
 				listeMedecin(list_2);
 			}
-		});
+		}); //fin du bouton Ajouter
 		button_ajouterMedecin.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		button_ajouterMedecin.setBounds(174, 194, 101, 30);
 		panel_2.add(button_ajouterMedecin);
 
+		/**
+		 * Supprime un medecin via une requête inscrit dans une méthode
+		 */
 		JButton button_supprimerMedecin = new JButton("Supprimer");
 		button_supprimerMedecin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				MethodesSql.supprimerMedecin(uneConnexion.getConnection(), pId);
-				effacerTextMedecin();
-				listeMedecin(list_2);
+				MethodesSql.supprimerMedecin(uneConnexion.getConnection(), pId); //méthode qui supprime un medecin dans la bdd
+				effacerTextMedecin(); //méthode pour effacer des informations inscrit dans les textfield
+				listeMedecin(list_2); //affiche la liste des médecins dans la jlist medecin
 
 			}
-		});
+		}); //fin du bouton supprimer
 		button_supprimerMedecin.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		button_supprimerMedecin.setBounds(498, 194, 110, 30);
 		panel_2.add(button_supprimerMedecin);
 
+		/**
+		 * Modifie un medecin via une requête , comme pour le bouton ajouter medecin ,
+		 * on recupère les informations des textfield pour ensuite les placer dans des variables et 
+		 * ainsi inscrire dans la méthode qui modifie le medecin dans la bdd
+		 * 
+		 */
 		JButton button_modifierMedecin = new JButton("Modifier");
 		button_modifierMedecin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -310,7 +331,7 @@ public class SessionAdmin {
 						pTel, pSpecialite, pId);
 				listeMedecin(list_2);
 			}
-		});
+		}); //fin du bouton modifier
 		button_modifierMedecin.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		button_modifierMedecin.setBounds(333, 194, 101, 30);
 		panel_2.add(button_modifierMedecin);
@@ -325,10 +346,13 @@ public class SessionAdmin {
 		button_rechercherMedecin.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		button_rechercherMedecin.setBounds(584, 450, 123, 30);
 		panel_GestionMedecin.add(button_rechercherMedecin);
-		JList list_1 = new JList();
+		JList list_1 = new JList(); //liste des patients
 
 		listePatient(list_1);
 
+		/**
+		 * méthode qui permet de cliquer sur un patient dans la jlist et ainsi récuperer ses informations dans les textfield
+		 */
 		list_1.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent arg0) {
 				int i = list_1.getSelectedIndex();
@@ -344,7 +368,7 @@ public class SessionAdmin {
 				textField_EmailPatient.setText(unPatient.getMail());
 				textField_TelPatient.setText(unPatient.getTel());
 			}
-		});
+		}); //fin de la méthode
 
 		JPanel panel_Patients = new JPanel();
 		panel_Patients.setBackground(new Color(204, 153, 255));
@@ -386,6 +410,9 @@ public class SessionAdmin {
 		lblSexePatient.setBounds(10, 179, 80, 30);
 		panel.add(lblSexePatient);
 
+		/**
+		 * Ajoute un patient via une méthode ajouterPatient qui l'insère dans la bdd
+		 */
 		JButton btnAjouterPatient = new JButton("Ajouter ");
 		btnAjouterPatient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -404,11 +431,14 @@ public class SessionAdmin {
 				effacerText();
 			}
 
-		});
+		}); //fin du bouton ajouter
 		btnAjouterPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnAjouterPatient.setBounds(133, 219, 101, 30);
 		panel.add(btnAjouterPatient);
 
+		/**
+		 * Modifie un patient via une méthode qui le modifie dans la bdd
+		 */
 		JButton btnModifierPatient = new JButton("Modifier");
 		btnModifierPatient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -424,11 +454,14 @@ public class SessionAdmin {
 						pCp, pId ,pSS);
 				listePatient(list_1);
 			}
-		});
+		}); //fin du bouton modifier
 		btnModifierPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnModifierPatient.setBounds(303, 219, 101, 30);
 		panel.add(btnModifierPatient);
 
+		/**
+		 * Supprime un patient de la bdd via une méthode
+		 */
 		JButton btnSupprimerPatient = new JButton("Supprimer");
 		btnSupprimerPatient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -436,7 +469,7 @@ public class SessionAdmin {
 				effacerText();
 				listePatient(list_1);
 			}
-		});
+		});//fin du bouton supprimer
 		btnSupprimerPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnSupprimerPatient.setBounds(455, 220, 110, 30);
 		panel.add(btnSupprimerPatient);
@@ -547,6 +580,11 @@ public class SessionAdmin {
 		scrollPane_listPatients.setViewportView(list_1);
 	}
 
+	/**
+	 * Méthode qui récupère les informations du medecin via une requête et en paramètre on passe une jlist pour
+	 * pouvoir les afficher
+	 * @param liste2
+	 */
 	private void listeMedecin(JList liste2) {
 		lstMedecins.clear();
 		ResultSet resM = MethodesSql.afficherMedecins(uneConnexion.getConnection());
@@ -571,6 +609,10 @@ public class SessionAdmin {
 		}
 	}
 
+	/**
+	 * Méthode qui affiche les patients via requête et passe en paramètre une jlist pour afficher ses informations
+	 * @param liste1
+	 */
 	private void listePatient(JList liste1) {
 		lstPatients.clear();
 		ResultSet res = MethodesSql.afficherPatients(uneConnexion.getConnection());
@@ -600,6 +642,9 @@ public class SessionAdmin {
 		}
 	}
 
+	/**
+	 * Méthode pour effacer les textfield du patient
+	 */
 	private void effacerText() {
 		textField_AdressPatient.setText("");
 		textField_CodePostPatient.setText("");
@@ -611,6 +656,9 @@ public class SessionAdmin {
 		textField_VillePatient.setText("");
 	}
 
+	/**
+	 * Méthode pour effacer les textfield du medecin
+	 */
 	private void effacerTextMedecin() {
 		textField_adrMedecin.setText("");
 		textField_cpMedecin.setText("");

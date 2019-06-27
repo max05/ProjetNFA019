@@ -24,13 +24,19 @@ import javax.swing.JPasswordField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * Fenêtre de login , l'utilisateur saisit ses infos et
+ * choisit son statut
+ * @author maxime , eric
+ *
+ */
 public class Login {
 
-	private JFrame frame;
+	private JFrame frame; //création de la variable jframe
 	private JTextField textField;
 	private JPasswordField passwordFieldAuthentif;
 	private Connexion uneConnexion = new Connexion();
-	private int idPma;
+	private int idPma; //variable pour récuperer l'id utilisateur
 
 	/**
 	 * Launch the application.
@@ -59,74 +65,105 @@ public class Login {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
+		/**
+		 * Création de la fenêtre 
+		 */
+		frame = new JFrame(); 
 		frame.getContentPane().setBackground(new Color(153, 153, 255));
 		frame.getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 14));
 		frame.setBounds(100, 100, 800, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
+		/**
+		 * Label merci de vous authentifier
+		 */
 		JLabel lblMerciDeVous = new JLabel("Merci de vous authentifier");
 		lblMerciDeVous.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblMerciDeVous.setBounds(275, 54, 271, 43);
 		frame.getContentPane().add(lblMerciDeVous);
 
+		/**
+		 * Label identifiant
+		 */
 		JLabel lblIdentifiant = new JLabel("Identifiant :");
 		lblIdentifiant.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		lblIdentifiant.setBounds(108, 169, 102, 24);
 		frame.getContentPane().add(lblIdentifiant);
 
+		/**
+		 * Label mot de passe
+		 */
 		JLabel lblMotDePasse = new JLabel("Mot de passe :");
 		lblMotDePasse.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		lblMotDePasse.setBounds(108, 287, 128, 24);
 		frame.getContentPane().add(lblMotDePasse);
 
+		/**
+		 * Textfield pour la saisie du login
+		 */
 		textField = new JTextField();
 		textField.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		textField.setBounds(262, 167, 271, 30);
 		frame.getContentPane().add(textField);
 		textField.setColumns(10);
 
+		/**
+		 * Bouton sélection admin
+		 */
 		JRadioButton adminButton = new JRadioButton("Admin");
 		adminButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		adminButton.setBounds(222, 383, 81, 30);
 		frame.getContentPane().add(adminButton);
 
+		/**
+		 * Bouton sélection medecin
+		 */
 		JRadioButton medecinButton = new JRadioButton("M\u00E9decin");
 		medecinButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		medecinButton.setBounds(388, 383, 81, 30);
 		frame.getContentPane().add(medecinButton);
 
+		/**
+		 * Bouton sélection patient
+		 */
 		JRadioButton patientButton = new JRadioButton("Patient");
 		patientButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		patientButton.setBounds(547, 383, 81, 30);
 		frame.getContentPane().add(patientButton);
 
+		/**
+		 * Regroupe les trois boutons et permet de sélectionner un seul bouton à la fois
+		 */
 		ButtonGroup group = new ButtonGroup();
 		group.add(adminButton);
 		group.add(patientButton);
 		group.add(medecinButton);
 
 		/**
-		 * bouton de connexion
+		 * Bouton de connexion
 		 */
 		JButton btnConnexion = new JButton("connexion");
 		btnConnexion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				/**
-				 * Faire des conditions pour chaque type d'utilisateur
+				 * Conditions pour chaques type d'utilisateur
 				 */
-				ResultSet res = MethodesSql.afficherUser(uneConnexion.getConnection());
+				ResultSet res = MethodesSql.afficherUser(uneConnexion.getConnection()); //utilisation de la méthode pour afficher les users
 
 				try {
 					while (res.next()) {
-						idPma = res.getInt("id_pma");
+						idPma = res.getInt("id_pma"); //récupérer l'id Patient Medecin Admin
 
 					}
 
 					if (patientButton.isSelected()) {
 						if (idPma > 1 || idPma < 1000) {
 							try {
+								/**
+								 * Si le bouton patient est sélectionné on affiche la fenêtre correspond
+								 * à la session patient
+								 */
 								SessionPatient windowsPatient = new SessionPatient();
 								windowsPatient.framePatient.setVisible(true);
 								frame.setVisible(false);
@@ -141,20 +178,24 @@ public class Login {
 					e1.printStackTrace();
 				}
 
+				/**
+				 * Si le bouton medecin est selectionné , on affiche la fenêtre session medecin
+				 */
 				if (medecinButton.isSelected()) {
-					
-						try {
-							SessionMedecin window = new SessionMedecin();
-							window.frameMedecin.setVisible(true);
-							frame.setVisible(false);
-						} catch (Exception e3) {
-							e3.printStackTrace();
-						}
+
+					try {
+						SessionMedecin window = new SessionMedecin();
+						window.frameMedecin.setVisible(true);
+						frame.setVisible(false);
+					} catch (Exception e3) {
+						e3.printStackTrace();
 					}
+				}
 
-				
-
-				if (adminButton.isSelected() ) {
+				/**
+				 * Si le bouton admin est sélectionné , on affiche la fenêtre session admin
+				 */
+				if (adminButton.isSelected()) {
 
 					try {
 						SessionAdmin window = new SessionAdmin();
@@ -165,15 +206,11 @@ public class Login {
 					}
 				}
 
-			} // fin de l'accolade bouton connexion
-		});
+			} 
+		});// fin de l'accolade bouton connexion
 		btnConnexion.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		btnConnexion.setBounds(326, 461, 155, 30);
 		frame.getContentPane().add(btnConnexion);
-
-		/**
-		 * Permet de regrouper les boutons et choisir une seule session utilisateur
-		 */
 
 		// logo1
 		JLabel logoImage = new JLabel("");
@@ -194,13 +231,12 @@ public class Login {
 
 		frame.getContentPane().add(logoMedecine);
 
+		/**
+		 * Textfield pour le mot de passe (cache le mdp)
+		 */
 		passwordFieldAuthentif = new JPasswordField();
 		passwordFieldAuthentif.setBounds(262, 281, 271, 30);
 		frame.getContentPane().add(passwordFieldAuthentif);
 	}
 
-	public void openAdmin() {
-		SessionAdmin uneSessionA = new SessionAdmin();
-
-	}
 }

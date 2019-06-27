@@ -26,6 +26,12 @@ import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JRadioButton;
 
+/**
+ * Fenêtre session patient 
+ * le patient peut voir la liste des medecin et prendre un rdv avec celui-ci
+ * @author maxime , eric
+ *
+ */
 public class SessionPatient {
 
 	public JFrame framePatient;
@@ -51,8 +57,8 @@ public class SessionPatient {
 	private JTextField textField_allergies;
 	private JTextField textField_antecedentFami;
 	private JTextField textField_rechercherDossier;
-	private ArrayList<Medecin> lstMedecin = new ArrayList<Medecin>();
-	private Connexion uneConnexion = new Connexion();
+	private ArrayList<Medecin> lstMedecin = new ArrayList<Medecin>();//Stock les medecins et permet d'afficher les infos
+	private Connexion uneConnexion = new Connexion();//Fait la connexion avec la bdd
 
 	/**
 	 * Launch the application.
@@ -81,12 +87,15 @@ public class SessionPatient {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		/**
+		 * Création de la fenêtre patient
+		 */
 		framePatient = new JFrame();
 		framePatient.setBounds(100, 100, 800, 600);
 		framePatient.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		framePatient.getContentPane().setLayout(null);
-		JList list_medecins = new JList();
-		listeMedecin(list_medecins);
+		JList list_medecins = new JList(); //création de la jlist medecins
+		listeMedecin(list_medecins); //affiche les infos medecin dans la jlist via une méthode
 		
 		JLabel lblEspacePatient = new JLabel("Espace Patient");
 		lblEspacePatient.setFont(new Font("Tahoma", Font.PLAIN, 17));
@@ -145,11 +154,7 @@ public class SessionPatient {
 		lblInfoMedecin.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblInfoMedecin.setBounds(13, 37, 207, 127);
 		panel_ficheInfoMedecin.add(lblInfoMedecin);
-//		lblInfoMedecin.add(list_medecins);
-		
-		//frame.getContentPane().add(lbl_logoMedecin);
-		
-		//-----------------------------------------------
+
 		JButton btnRechercherConsultation = new JButton("Rechercher");
 		btnRechercherConsultation.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnRechercherConsultation.setBounds(592, 8, 133, 23);
@@ -487,6 +492,10 @@ public class SessionPatient {
 		panel_1.add(btnRechercherDossier);
 	}
 
+	/**
+	 * Méthode qui recupère les infos medecin via une requête select et en paramètre on passe une jlist
+	 * @param liste2
+	 */
 	private void listeMedecin(JList liste2) {
 		lstMedecin.clear();
 		ResultSet resM = MethodesSql.afficherMedecins(uneConnexion.getConnection());

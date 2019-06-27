@@ -33,6 +33,11 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.UIManager;
 
+/**
+ * Fenêtre session medecin
+ * @author maxime , eric
+ *
+ */
 public class SessionMedecin {
 
 	public JFrame frameMedecin;
@@ -70,13 +75,16 @@ public class SessionMedecin {
 	 */
 	private void initialize() {
 		
+		/**
+		 * Création de la fenêtre medecin
+		 */
 		frameMedecin = new JFrame();
 		frameMedecin.getContentPane().setForeground(new Color(0, 0, 0));
 		frameMedecin.setBounds(100, 100, 800, 600);
 		frameMedecin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frameMedecin.getContentPane().setLayout(null);
-		JList listPatients = new JList();
-		listePatient(listPatients);
+		JList listPatients = new JList(); //création de la jlist patient
+		listePatient(listPatients);//affiche les patients via une méthode
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -404,6 +412,10 @@ public class SessionMedecin {
 		frameMedecin.getContentPane().add(lblEspaceMdecin);
 	}
 
+	/**
+	 * Méthode qui affiche les patients via requête et passe en paramètre une jlist pour afficher ses informations
+	 * @param liste1
+	 */
 	private void listePatient(JList liste1) {
 		lstPatients.clear();
 		ResultSet res = MethodesSql.afficherPatients(uneConnexion.getConnection());
