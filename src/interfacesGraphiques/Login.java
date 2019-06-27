@@ -123,10 +123,9 @@ public class Login {
 						idPma = res.getInt("id_pma");
 
 					}
-					
+
 					if (patientButton.isSelected()) {
-						if(idPma > 1 || idPma <1000)
-						{
+						if (idPma > 1 || idPma < 1000) {
 							try {
 								SessionPatient windowsPatient = new SessionPatient();
 								windowsPatient.framePatient.setVisible(true);
@@ -137,18 +136,25 @@ public class Login {
 						}
 					}
 
-					
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
-				if(medecinButton.isSelected()) {
-					
-				}
-				
-				if(adminButton.isSelected() && idPma >= 9000) {
 
+				if (medecinButton.isSelected()) {
+					if(idPma >1000 ) {
+						try {
+							SessionMedecin window = new SessionMedecin();
+							window.frameMedecin.setVisible(true);
+							frame.setVisible(false);
+						} catch (Exception e3) {
+							e3.printStackTrace();
+						}
+					}
+
+				}
+
+				if (adminButton.isSelected() && idPma >= 9000) {
 
 					try {
 						SessionAdmin window = new SessionAdmin();
@@ -158,10 +164,8 @@ public class Login {
 						ee.printStackTrace();
 					}
 				}
-				
-				
 
-			} //fin de l'accolade bouton connexion
+			} // fin de l'accolade bouton connexion
 		});
 		btnConnexion.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		btnConnexion.setBounds(326, 461, 155, 30);
@@ -194,9 +198,9 @@ public class Login {
 		passwordFieldAuthentif.setBounds(262, 281, 271, 30);
 		frame.getContentPane().add(passwordFieldAuthentif);
 	}
-	
+
 	public void openAdmin() {
 		SessionAdmin uneSessionA = new SessionAdmin();
-		
+
 	}
 }

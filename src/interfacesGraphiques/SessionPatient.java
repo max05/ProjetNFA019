@@ -2,6 +2,9 @@ package interfacesGraphiques;
 
 import java.awt.EventQueue;
 import java.awt.Image;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -12,6 +15,11 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.border.TitledBorder;
+
+import fr.gestion.rdv.Connexion;
+import fr.gestion.rdv.Medecin;
+import fr.gestion.rdv.MethodesSql;
+
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import java.awt.Color;
@@ -43,6 +51,8 @@ public class SessionPatient {
 	private JTextField textField_allergies;
 	private JTextField textField_antecedentFami;
 	private JTextField textField_rechercherDossier;
+	private ArrayList<Medecin> lstMedecin = new ArrayList<Medecin>();
+	private Connexion uneConnexion = new Connexion();
 
 	/**
 	 * Launch the application.
@@ -75,6 +85,8 @@ public class SessionPatient {
 		framePatient.setBounds(100, 100, 800, 600);
 		framePatient.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		framePatient.getContentPane().setLayout(null);
+		JList list_medecins = new JList();
+		listeMedecin(list_medecins);
 		
 		JLabel lblEspacePatient = new JLabel("Espace Patient");
 		lblEspacePatient.setFont(new Font("Tahoma", Font.PLAIN, 17));
@@ -108,12 +120,12 @@ public class SessionPatient {
 		scrollPane.setBounds(10, 21, 695, 162);
 		panel_2.add(scrollPane);
 		
-		JList list_medecins = new JList();
+
 		scrollPane.setViewportView(list_medecins);
 		
 		JPanel panel_ficheInfoMedecin = new JPanel();
 		panel_ficheInfoMedecin.setBackground(new Color(204, 204, 255));
-		panel_ficheInfoMedecin.setBounds(10, 237, 348, 215);
+		panel_ficheInfoMedecin.setBounds(10, 243, 348, 215);
 		panel_ficheInfoMedecin.setBorder(new TitledBorder(null, "Fiche information M\u00E9decins", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel.add(panel_ficheInfoMedecin);
 		panel_ficheInfoMedecin.setLayout(null);
@@ -124,6 +136,16 @@ public class SessionPatient {
 		panel_ficheInfoMedecin.add(lbl_logoMedecin);
 		Image logoImage3 = new ImageIcon(this.getClass().getResource("/logo_medecin2.jpg")).getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);
 		lbl_logoMedecin.setIcon(new ImageIcon(logoImage3));
+		
+		JLabel label_1 = new JLabel("");
+		label_1.setBounds(0, 48, 56, 16);
+		panel_ficheInfoMedecin.add(label_1);
+		
+		JLabel lblInfoMedecin = new JLabel("");
+		lblInfoMedecin.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblInfoMedecin.setBounds(13, 37, 207, 127);
+		panel_ficheInfoMedecin.add(lblInfoMedecin);
+//		lblInfoMedecin.add(list_medecins);
 		
 		//frame.getContentPane().add(lbl_logoMedecin);
 		
@@ -465,4 +487,27 @@ public class SessionPatient {
 		panel_1.add(btnRechercherDossier);
 	}
 
+	private void listeMedecin(JList liste2) {
+		lstMedecin.clear();
+		ResultSet resM = MethodesSql.afficherMedecins(uneConnexion.getConnection());
+		
+		try {
+			while(resM.next()) {
+				Medecin unMedecin = new Medecin();
+				unMedecin.setId(resM.getInt("id_medecin"));
+				unMedecin.setNom(resM.getString("nomM"));
+				unMedecin.setPrenom(resM.getString("prenomM"));
+				unMedecin.setMail(resM.getString("mailM"));
+				unMedecin.setVille(resM.getString("villeM"));
+				unMedecin.setCp(resM.getString("cpM"));
+				unMedecin.setTel(resM.getString("telM"));
+				unMedecin.setSpecialite(resM.getString("intitule"));
+				lstMedecin.add(unMedecin);
+			}
+			liste2.setListData(lstMedecin.toArray());
+		} catch (SQLException e1) {
+			// TODO: handle exception
+			e1.printStackTrace();
+		}
+	}
 }

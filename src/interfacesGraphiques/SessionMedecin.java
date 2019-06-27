@@ -35,7 +35,7 @@ import javax.swing.UIManager;
 
 public class SessionMedecin {
 
-	private JFrame frame;
+	public JFrame frameMedecin;
 	private JTextField textField_rechercherConsultation;
 	private JTextField textField_rechercherDiagnostic;
 	private ArrayList<Patient> lstPatients = new ArrayList<Patient>();
@@ -45,18 +45,18 @@ public class SessionMedecin {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					SessionMedecin window = new SessionMedecin();
-					window.frame.setVisible(true);
+					window.frameMedecin.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
-	}
+	}*/
 
 	/**
 	 * Create the application.
@@ -70,18 +70,18 @@ public class SessionMedecin {
 	 */
 	private void initialize() {
 		
-		frame = new JFrame();
-		frame.getContentPane().setForeground(new Color(0, 0, 0));
-		frame.setBounds(100, 100, 800, 600);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		frameMedecin = new JFrame();
+		frameMedecin.getContentPane().setForeground(new Color(0, 0, 0));
+		frameMedecin.setBounds(100, 100, 800, 600);
+		frameMedecin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frameMedecin.getContentPane().setLayout(null);
 		JList listPatients = new JList();
 		listePatient(listPatients);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		tabbedPane.setBounds(0, 28, 861, 534);
-		frame.getContentPane().add(tabbedPane);
+		frameMedecin.getContentPane().add(tabbedPane);
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(204, 153, 255));
@@ -401,7 +401,7 @@ public class SessionMedecin {
 		JLabel lblEspaceMdecin = new JLabel("Espace M\u00E9decin");
 		lblEspaceMdecin.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		lblEspaceMdecin.setBounds(10, 0, 133, 26);
-		frame.getContentPane().add(lblEspaceMdecin);
+		frameMedecin.getContentPane().add(lblEspaceMdecin);
 	}
 
 	private void listePatient(JList liste1) {

@@ -75,18 +75,18 @@ public class MethodesSql {
 		}
 	}
 	
-	public static void modifierPatient(Connection conn , String pNom , String pPrenom , String pTel ,String pMail , String pAdresse , String pVille , String pCp , int pId) {
+	public static void modifierPatient(Connection conn , String pNom , String pPrenom , String pTel ,String pMail , String pAdresse , String pVille , String pCp , int pId , int pSS) {
 		try {
-			prep = conn.prepareStatement("update patient set nomP = ? , prenomP = ? , telP = ? , mailP = ? , adresseP = ? , villeP = ? , cpP = ? where id_patient = ?");
+			prep = conn.prepareStatement("update patient set nomP = ? , prenomP = ? , telP = ? , SS = ? , mailP = ? , adresseP = ? , villeP = ? , cpP = ? where id_patient = ?");
 			prep.setString(1, pNom);
 			prep.setString(2, pPrenom);
 			prep.setString(3, pTel);
-			//prep.setString(4, pSexe);
-			prep.setString(4, pMail);
-			prep.setString(5, pAdresse);
-			prep.setString(6, pVille);
-			prep.setString(7, pCp);
-			prep.setInt(8, pId);
+			prep.setInt(4,pSS);
+			prep.setString(5, pMail);
+			prep.setString(6, pAdresse);
+			prep.setString(7, pVille);
+			prep.setString(8, pCp);
+			prep.setInt(9, pId);
 			prep.executeUpdate();
 			prep.close();
 			
