@@ -18,6 +18,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.Color;
+import java.awt.Component;
+
 import javax.swing.JPasswordField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -121,22 +123,45 @@ public class Login {
 						idPma = res.getInt("id_pma");
 
 					}
+					
 					if (patientButton.isSelected()) {
-						
-
-						if (idPma < 1000) {
-							SessionPatient uneSessionP = new SessionPatient();
-
-						} else {
-							JFrame msgErreur = new JFrame("Erreur !!");
+						if(idPma > 1 || idPma <1000)
+						{
+							try {
+								SessionPatient windowsPatient = new SessionPatient();
+								windowsPatient.framePatient.setVisible(true);
+								frame.setVisible(false);
+							} catch (Exception ex) {
+								ex.printStackTrace();
+							}
 						}
 					}
+
+					
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				
+				if(medecinButton.isSelected()) {
+					
+				}
+				
+				if(adminButton.isSelected() && idPma >= 9000) {
 
-			}
+
+					try {
+						SessionAdmin window = new SessionAdmin();
+						window.frmEspaceAdministrateur.setVisible(true);
+						frame.setVisible(false);
+					} catch (Exception ee) {
+						ee.printStackTrace();
+					}
+				}
+				
+				
+
+			} //fin de l'accolade bouton connexion
 		});
 		btnConnexion.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		btnConnexion.setBounds(326, 461, 155, 30);
@@ -168,5 +193,10 @@ public class Login {
 		passwordFieldAuthentif = new JPasswordField();
 		passwordFieldAuthentif.setBounds(262, 281, 271, 30);
 		frame.getContentPane().add(passwordFieldAuthentif);
+	}
+	
+	public void openAdmin() {
+		SessionAdmin uneSessionA = new SessionAdmin();
+		
 	}
 }

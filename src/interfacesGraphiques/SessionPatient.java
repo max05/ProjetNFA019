@@ -20,7 +20,7 @@ import javax.swing.JRadioButton;
 
 public class SessionPatient {
 
-	private JFrame frame;
+	public JFrame framePatient;
 	private JTextField textField_rechercherConsultation;
 	private JTextField textField_NumSS;
 	private JTextField textField_VotreNom;
@@ -47,18 +47,18 @@ public class SessionPatient {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					SessionPatient window = new SessionPatient();
-					window.frame.setVisible(true);
+					SessionPatient windowsPatient = new SessionPatient();
+					windowsPatient.framePatient.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
-	}
+	}*/
 
 	/**
 	 * Create the application.
@@ -71,20 +71,20 @@ public class SessionPatient {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 800, 600);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+		framePatient = new JFrame();
+		framePatient.setBounds(100, 100, 800, 600);
+		framePatient.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		framePatient.getContentPane().setLayout(null);
 		
 		JLabel lblEspacePatient = new JLabel("Espace Patient");
 		lblEspacePatient.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		lblEspacePatient.setBounds(20, 11, 136, 24);
-		frame.getContentPane().add(lblEspacePatient);
+		framePatient.getContentPane().add(lblEspacePatient);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		tabbedPane.setBounds(20, 36, 740, 516);
-		frame.getContentPane().add(tabbedPane);
+		framePatient.getContentPane().add(tabbedPane);
         
 		
 		JPanel panel = new JPanel();

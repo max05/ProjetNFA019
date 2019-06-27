@@ -42,7 +42,7 @@ import javax.swing.border.EtchedBorder;
 
 public class SessionAdmin {
 
-	private JFrame frmEspaceAdministrateur;
+	public JFrame frmEspaceAdministrateur;
 	private JTextField textField_4;
 	private JTextField textField_NumSecuPatient;
 	private JTextField textField_NomPatient;
@@ -72,7 +72,7 @@ public class SessionAdmin {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -83,7 +83,7 @@ public class SessionAdmin {
 				}
 			}
 		});
-	}
+	}*/
 
 	/**
 	 * Create the application.
@@ -104,29 +104,9 @@ public class SessionAdmin {
 		frmEspaceAdministrateur.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmEspaceAdministrateur.getContentPane().setLayout(null);
 		frmEspaceAdministrateur.setLocationRelativeTo(null);
-		JList list_1 = new JList();
 		JList list_2 = new JList();
 		JComboBox comboBox_medecin = new JComboBox();
-				
-		listePatient(list_1);
 		listeMedecin(list_2);
-		
-		list_1.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent arg0) {
-				int i = list_1.getSelectedIndex();
-				unPatient = lstPatients.get(i);
-				pId = unPatient.getId();
-				String pSS = String.valueOf(unPatient.getSS());
-				textField_NomPatient.setText(unPatient.getNom());
-				textField_PrenomPatient.setText(unPatient.getPrenom());
-				textField_AdressPatient.setText(unPatient.getAdresse());
-				textField_CodePostPatient.setText(unPatient.getCp());
-				textField_NumSecuPatient.setText(pSS);
-				textField_VillePatient.setText(unPatient.getVille());
-				textField_EmailPatient.setText(unPatient.getMail());
-				textField_TelPatient.setText(unPatient.getTel());
-			}
-		});
 		
 		list_2.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent arg0) {
@@ -157,205 +137,6 @@ public class SessionAdmin {
 		 * panel_Patients.setBorder(new TitledBorder(null, "Fiche informations Patient",
 		 * TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		 */
-
-		JPanel panel_Patients = new JPanel();
-		panel_Patients.setBackground(new Color(204, 153, 255));
-		tabbedPane_1.addTab("Gestion des patients", null, panel_Patients, null);
-		panel_Patients.setLayout(null);
-
-		JPanel panel = new JPanel();
-		panel.setBackground(new Color(153, 153, 255));
-		panel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		panel.setBounds(10, 174, 673, 262);
-		panel.setBorder(new TitledBorder(
-				new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)),
-				"Fiche informations du Patient : ", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panel_Patients.add(panel);
-		panel.setLayout(null);
-
-		JLabel lblNumroSs = new JLabel("Num\u00E9ro SS : ");
-		lblNumroSs.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblNumroSs.setBounds(10, 34, 101, 19);
-		panel.add(lblNumroSs);
-
-		JLabel lblNomPatient = new JLabel("Nom :");
-		lblNomPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblNomPatient.setBounds(10, 75, 80, 14);
-		panel.add(lblNomPatient);
-
-		JLabel lblPrenomPatient = new JLabel("Prenom :");
-		lblPrenomPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblPrenomPatient.setBounds(10, 100, 80, 30);
-		panel.add(lblPrenomPatient);
-
-		JLabel lblNumTelPatient = new JLabel("No tel : ");
-		lblNumTelPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblNumTelPatient.setBounds(10, 138, 80, 30);
-		panel.add(lblNumTelPatient);
-
-		JLabel lblSexePatient = new JLabel("Sexe : ");
-		lblSexePatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblSexePatient.setBounds(10, 179, 80, 30);
-		panel.add(lblSexePatient);
-
-		JButton btnAjouterPatient = new JButton("Ajouter ");
-		btnAjouterPatient.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				pSS = Integer.valueOf(textField_NumSecuPatient.getText());
-				pNom = textField_NomPatient.getText();
-				pPrenom = textField_PrenomPatient.getText();
-				pTel = textField_TelPatient.getText();
-				pEmail = textField_EmailPatient.getText();
-				pAdresse = textField_AdressPatient.getText();
-				pVille = textField_VillePatient.getText();
-				pCp = textField_CodePostPatient.getText();
-				MethodesSql.ajouterPatient(uneConnexion.getConnection(), pSS, pNom, pPrenom, pTel, pEmail, pAdresse,
-						pVille, pCp);
-				
-				listePatient(list_1);
-				effacerText();
-			}
-
-		});
-		btnAjouterPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnAjouterPatient.setBounds(133, 219, 101, 30);
-		panel.add(btnAjouterPatient);
-
-		JButton btnModifierPatient = new JButton("Modifier");
-		btnModifierPatient.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				pSS = Integer.valueOf(textField_NumSecuPatient.getText());
-				pNom = textField_NomPatient.getText();
-				pPrenom = textField_PrenomPatient.getText();
-				pTel = textField_TelPatient.getText();
-				pEmail = textField_EmailPatient.getText();
-				pAdresse = textField_AdressPatient.getText();
-				pVille = textField_VillePatient.getText();
-				pCp = textField_CodePostPatient.getText();
-				MethodesSql.modifierPatient(uneConnexion.getConnection(), pNom, pPrenom, pTel, pEmail, pAdresse, pVille,pCp, pId);
-				listePatient(list_1);
-			}
-		});
-		btnModifierPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnModifierPatient.setBounds(303, 219, 101, 30);
-		panel.add(btnModifierPatient);
-
-		JButton btnSupprimerPatient = new JButton("Supprimer");
-		btnSupprimerPatient.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				MethodesSql.supprimerPatient(uneConnexion.getConnection(), pId);
-				effacerText();
-				listePatient(list_1);
-			}
-		});
-		btnSupprimerPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnSupprimerPatient.setBounds(455, 220, 110, 30);
-		panel.add(btnSupprimerPatient);
-
-		JRadioButton rdbtnSexeH = new JRadioButton("H");
-		rdbtnSexeH.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		rdbtnSexeH.setBounds(121, 182, 55, 30);
-		panel.add(rdbtnSexeH);
-
-		JRadioButton rdbtnSexeF = new JRadioButton("F");
-		rdbtnSexeF.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		rdbtnSexeF.setBounds(211, 182, 55, 30);
-		panel.add(rdbtnSexeF);
-
-		textField_NumSecuPatient = new JTextField();
-		textField_NumSecuPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		textField_NumSecuPatient.setColumns(10);
-		textField_NumSecuPatient.setBounds(121, 33, 145, 30);
-		panel.add(textField_NumSecuPatient);
-
-		textField_NomPatient = new JTextField();
-		textField_NomPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		textField_NomPatient.setColumns(10);
-		textField_NomPatient.setBounds(121, 72, 145, 30);
-		panel.add(textField_NomPatient);
-
-		textField_PrenomPatient = new JTextField();
-		textField_PrenomPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		textField_PrenomPatient.setColumns(10);
-		textField_PrenomPatient.setBounds(121, 110, 145, 30);
-		panel.add(textField_PrenomPatient);
-
-		textField_TelPatient = new JTextField();
-		textField_TelPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		textField_TelPatient.setColumns(10);
-		textField_TelPatient.setBounds(121, 150, 145, 30);
-		panel.add(textField_TelPatient);
-
-		JLabel lblEmailPatient = new JLabel("Email : ");
-		lblEmailPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblEmailPatient.setBounds(337, 36, 74, 30);
-		panel.add(lblEmailPatient);
-
-		JLabel lblAdressePatient = new JLabel("Adresse : ");
-		lblAdressePatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblAdressePatient.setBounds(337, 75, 67, 30);
-		panel.add(lblAdressePatient);
-
-		JLabel lblVillePatient = new JLabel("Ville : ");
-		lblVillePatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblVillePatient.setBounds(337, 113, 50, 30);
-		panel.add(lblVillePatient);
-
-		JLabel lblCpPatient = new JLabel("CP : ");
-		lblCpPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblCpPatient.setBounds(337, 153, 50, 30);
-		panel.add(lblCpPatient);
-
-		textField_EmailPatient = new JTextField();
-		textField_EmailPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		textField_EmailPatient.setColumns(10);
-		textField_EmailPatient.setBounds(428, 33, 145, 30);
-		panel.add(textField_EmailPatient);
-
-		textField_AdressPatient = new JTextField();
-		textField_AdressPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		textField_AdressPatient.setColumns(10);
-		textField_AdressPatient.setBounds(428, 75, 145, 30);
-		panel.add(textField_AdressPatient);
-
-		textField_VillePatient = new JTextField();
-		textField_VillePatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		textField_VillePatient.setColumns(10);
-		textField_VillePatient.setBounds(428, 112, 145, 30);
-		panel.add(textField_VillePatient);
-
-		textField_CodePostPatient = new JTextField();
-		textField_CodePostPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		textField_CodePostPatient.setColumns(10);
-		textField_CodePostPatient.setBounds(428, 150, 145, 30);
-		panel.add(textField_CodePostPatient);
-
-		textField_4 = new JTextField();
-		textField_4.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		textField_4.setBounds(10, 447, 540, 30);
-		textField_4.setText("");
-		textField_4.setColumns(10);
-		panel_Patients.add(textField_4);
-
-		JButton button = new JButton("Rechercher");
-		button.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		button.setBounds(560, 447, 123, 30);
-		panel_Patients.add(button);
-
-		JPanel panel_ListePatient = new JPanel();
-		panel_ListePatient.setBackground(new Color(153, 153, 255));
-		panel_ListePatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		panel_ListePatient.setBorder(
-				new TitledBorder(null, "Liste des Patients : ", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_ListePatient.setBounds(10, 11, 673, 152);
-		panel_Patients.add(panel_ListePatient);
-		panel_ListePatient.setLayout(null);
-
-		JScrollPane scrollPane_listPatients = new JScrollPane();
-		scrollPane_listPatients.setBounds(10, 24, 653, 117);
-		panel_ListePatient.add(scrollPane_listPatients);
-		
-		scrollPane_listPatients.setViewportView(list_1);
 
 		JPanel panel_GestionMedecin = new JPanel();
 		panel_GestionMedecin.setBackground(new Color(204, 153, 255));
@@ -551,6 +332,225 @@ public class SessionAdmin {
 		button_rechercherMedecin.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		button_rechercherMedecin.setBounds(584, 450, 123, 30);
 		panel_GestionMedecin.add(button_rechercherMedecin);
+		JList list_1 = new JList();
+		
+		listePatient(list_1);
+		
+		list_1.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent arg0) {
+				int i = list_1.getSelectedIndex();
+				unPatient = lstPatients.get(i);
+				pId = unPatient.getId();
+				String pSS = String.valueOf(unPatient.getSS());
+				textField_NomPatient.setText(unPatient.getNom());
+				textField_PrenomPatient.setText(unPatient.getPrenom());
+				textField_AdressPatient.setText(unPatient.getAdresse());
+				textField_CodePostPatient.setText(unPatient.getCp());
+				textField_NumSecuPatient.setText(pSS);
+				textField_VillePatient.setText(unPatient.getVille());
+				textField_EmailPatient.setText(unPatient.getMail());
+				textField_TelPatient.setText(unPatient.getTel());
+			}
+		});
+		
+				JPanel panel_Patients = new JPanel();
+				panel_Patients.setBackground(new Color(204, 153, 255));
+				tabbedPane_1.addTab("Gestion des patients", null, panel_Patients, null);
+				panel_Patients.setLayout(null);
+				
+						JPanel panel = new JPanel();
+						panel.setBackground(new Color(153, 153, 255));
+						panel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+						panel.setBounds(10, 174, 673, 262);
+						panel.setBorder(new TitledBorder(
+								new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)),
+								"Fiche informations du Patient : ", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+						panel_Patients.add(panel);
+						panel.setLayout(null);
+						
+								JLabel lblNumroSs = new JLabel("Num\u00E9ro SS : ");
+								lblNumroSs.setFont(new Font("Tahoma", Font.PLAIN, 14));
+								lblNumroSs.setBounds(10, 34, 101, 19);
+								panel.add(lblNumroSs);
+								
+										JLabel lblNomPatient = new JLabel("Nom :");
+										lblNomPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
+										lblNomPatient.setBounds(10, 75, 80, 14);
+										panel.add(lblNomPatient);
+										
+												JLabel lblPrenomPatient = new JLabel("Prenom :");
+												lblPrenomPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
+												lblPrenomPatient.setBounds(10, 100, 80, 30);
+												panel.add(lblPrenomPatient);
+												
+														JLabel lblNumTelPatient = new JLabel("No tel : ");
+														lblNumTelPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
+														lblNumTelPatient.setBounds(10, 138, 80, 30);
+														panel.add(lblNumTelPatient);
+														
+																JLabel lblSexePatient = new JLabel("Sexe : ");
+																lblSexePatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
+																lblSexePatient.setBounds(10, 179, 80, 30);
+																panel.add(lblSexePatient);
+																
+																		JButton btnAjouterPatient = new JButton("Ajouter ");
+																		btnAjouterPatient.addActionListener(new ActionListener() {
+																			public void actionPerformed(ActionEvent e) {
+																				pSS = Integer.valueOf(textField_NumSecuPatient.getText());
+																				pNom = textField_NomPatient.getText();
+																				pPrenom = textField_PrenomPatient.getText();
+																				pTel = textField_TelPatient.getText();
+																				pEmail = textField_EmailPatient.getText();
+																				pAdresse = textField_AdressPatient.getText();
+																				pVille = textField_VillePatient.getText();
+																				pCp = textField_CodePostPatient.getText();
+																				MethodesSql.ajouterPatient(uneConnexion.getConnection(), pSS, pNom, pPrenom, pTel, pEmail, pAdresse,
+																						pVille, pCp);
+																				
+																				listePatient(list_1);
+																				effacerText();
+																			}
+
+																		});
+																		btnAjouterPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
+																		btnAjouterPatient.setBounds(133, 219, 101, 30);
+																		panel.add(btnAjouterPatient);
+																		
+																				JButton btnModifierPatient = new JButton("Modifier");
+																				btnModifierPatient.addActionListener(new ActionListener() {
+																					public void actionPerformed(ActionEvent e) {
+																						pSS = Integer.valueOf(textField_NumSecuPatient.getText());
+																						pNom = textField_NomPatient.getText();
+																						pPrenom = textField_PrenomPatient.getText();
+																						pTel = textField_TelPatient.getText();
+																						pEmail = textField_EmailPatient.getText();
+																						pAdresse = textField_AdressPatient.getText();
+																						pVille = textField_VillePatient.getText();
+																						pCp = textField_CodePostPatient.getText();
+																						MethodesSql.modifierPatient(uneConnexion.getConnection(), pNom, pPrenom, pTel, pEmail, pAdresse, pVille,pCp, pId);
+																						listePatient(list_1);
+																					}
+																				});
+																				btnModifierPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
+																				btnModifierPatient.setBounds(303, 219, 101, 30);
+																				panel.add(btnModifierPatient);
+																				
+																						JButton btnSupprimerPatient = new JButton("Supprimer");
+																						btnSupprimerPatient.addActionListener(new ActionListener() {
+																							public void actionPerformed(ActionEvent e) {
+																								MethodesSql.supprimerPatient(uneConnexion.getConnection(), pId);
+																								effacerText();
+																								listePatient(list_1);
+																							}
+																						});
+																						btnSupprimerPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
+																						btnSupprimerPatient.setBounds(455, 220, 110, 30);
+																						panel.add(btnSupprimerPatient);
+																						
+																								JRadioButton rdbtnSexeH = new JRadioButton("H");
+																								rdbtnSexeH.setFont(new Font("Tahoma", Font.PLAIN, 14));
+																								rdbtnSexeH.setBounds(121, 182, 55, 30);
+																								panel.add(rdbtnSexeH);
+																								
+																										JRadioButton rdbtnSexeF = new JRadioButton("F");
+																										rdbtnSexeF.setFont(new Font("Tahoma", Font.PLAIN, 14));
+																										rdbtnSexeF.setBounds(211, 182, 55, 30);
+																										panel.add(rdbtnSexeF);
+																										
+																												textField_NumSecuPatient = new JTextField();
+																												textField_NumSecuPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
+																												textField_NumSecuPatient.setColumns(10);
+																												textField_NumSecuPatient.setBounds(121, 33, 145, 30);
+																												panel.add(textField_NumSecuPatient);
+																												
+																														textField_NomPatient = new JTextField();
+																														textField_NomPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
+																														textField_NomPatient.setColumns(10);
+																														textField_NomPatient.setBounds(121, 72, 145, 30);
+																														panel.add(textField_NomPatient);
+																														
+																																textField_PrenomPatient = new JTextField();
+																																textField_PrenomPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
+																																textField_PrenomPatient.setColumns(10);
+																																textField_PrenomPatient.setBounds(121, 110, 145, 30);
+																																panel.add(textField_PrenomPatient);
+																																
+																																		textField_TelPatient = new JTextField();
+																																		textField_TelPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
+																																		textField_TelPatient.setColumns(10);
+																																		textField_TelPatient.setBounds(121, 150, 145, 30);
+																																		panel.add(textField_TelPatient);
+																																		
+																																				JLabel lblEmailPatient = new JLabel("Email : ");
+																																				lblEmailPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
+																																				lblEmailPatient.setBounds(337, 36, 74, 30);
+																																				panel.add(lblEmailPatient);
+																																				
+																																						JLabel lblAdressePatient = new JLabel("Adresse : ");
+																																						lblAdressePatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
+																																						lblAdressePatient.setBounds(337, 75, 67, 30);
+																																						panel.add(lblAdressePatient);
+																																						
+																																								JLabel lblVillePatient = new JLabel("Ville : ");
+																																								lblVillePatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
+																																								lblVillePatient.setBounds(337, 113, 50, 30);
+																																								panel.add(lblVillePatient);
+																																								
+																																										JLabel lblCpPatient = new JLabel("CP : ");
+																																										lblCpPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
+																																										lblCpPatient.setBounds(337, 153, 50, 30);
+																																										panel.add(lblCpPatient);
+																																										
+																																												textField_EmailPatient = new JTextField();
+																																												textField_EmailPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
+																																												textField_EmailPatient.setColumns(10);
+																																												textField_EmailPatient.setBounds(428, 33, 145, 30);
+																																												panel.add(textField_EmailPatient);
+																																												
+																																														textField_AdressPatient = new JTextField();
+																																														textField_AdressPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
+																																														textField_AdressPatient.setColumns(10);
+																																														textField_AdressPatient.setBounds(428, 75, 145, 30);
+																																														panel.add(textField_AdressPatient);
+																																														
+																																																textField_VillePatient = new JTextField();
+																																																textField_VillePatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
+																																																textField_VillePatient.setColumns(10);
+																																																textField_VillePatient.setBounds(428, 112, 145, 30);
+																																																panel.add(textField_VillePatient);
+																																																
+																																																		textField_CodePostPatient = new JTextField();
+																																																		textField_CodePostPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
+																																																		textField_CodePostPatient.setColumns(10);
+																																																		textField_CodePostPatient.setBounds(428, 150, 145, 30);
+																																																		panel.add(textField_CodePostPatient);
+																																																		
+																																																				textField_4 = new JTextField();
+																																																				textField_4.setFont(new Font("Tahoma", Font.PLAIN, 14));
+																																																				textField_4.setBounds(10, 447, 540, 30);
+																																																				textField_4.setText("");
+																																																				textField_4.setColumns(10);
+																																																				panel_Patients.add(textField_4);
+																																																				
+																																																						JButton button = new JButton("Rechercher");
+																																																						button.setFont(new Font("Tahoma", Font.PLAIN, 14));
+																																																						button.setBounds(560, 447, 123, 30);
+																																																						panel_Patients.add(button);
+																																																						
+																																																								JPanel panel_ListePatient = new JPanel();
+																																																								panel_ListePatient.setBackground(new Color(153, 153, 255));
+																																																								panel_ListePatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
+																																																								panel_ListePatient.setBorder(
+																																																										new TitledBorder(null, "Liste des Patients : ", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+																																																								panel_ListePatient.setBounds(10, 11, 673, 152);
+																																																								panel_Patients.add(panel_ListePatient);
+																																																								panel_ListePatient.setLayout(null);
+																																																								
+																																																										JScrollPane scrollPane_listPatients = new JScrollPane();
+																																																										scrollPane_listPatients.setBounds(10, 24, 653, 117);
+																																																										panel_ListePatient.add(scrollPane_listPatients);
+																																																										
+																																																										scrollPane_listPatients.setViewportView(list_1);
 	}
 	
 	private void listeMedecin(JList liste2) {
