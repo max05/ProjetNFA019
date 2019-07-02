@@ -221,11 +221,25 @@ public class MethodesSql {
 		}
 	}
 	
-	public static void ajoutConsultation(Connection conn ,int pId , String pDate) {
+	public static void ajoutConsultation(Connection conn ,int pId) {
 		try {
 			prep = conn.prepareStatement("insert into consultation (id_patient , dateHeure) values (?,?)");
 			prep.setInt(1, pId);
-			prep.setDate(2, Date.valueOf(pDate));
+			prep.executeUpdate();
+			prep.close();
+			
+		}catch(SQLException ex) {
+			System.out.println("SQLException : "+ex.getMessage());
+			System.out.println("SQLState : "+((SQLException)ex).getSQLState());
+			System.out.println("VendorError : "+((SQLException)ex).getErrorCode());
+		}
+	}
+	
+	public static void modifierConsultation(Connection conn ,int pId , String pDate) {
+		try {
+			prep = conn.prepareStatement("update consultation set dateHeure = ? where id_patient = ?");
+			prep.setString(1, pDate);
+			prep.setInt(2, pId);
 			prep.executeUpdate();
 			prep.close();
 			
@@ -249,6 +263,21 @@ public class MethodesSql {
 			System.out.println("VendorError : "+((SQLException)ex).getErrorCode());
 		} finally {
 			return res;
+		}
+	}
+	
+	public static void supprimerConsultation(Connection conn , int pId) {
+		try {
+			prep = conn.prepareStatement("delete from consultation where id_patient = ?");
+			prep.setInt(1, pId);
+			prep.executeUpdate();
+			prep.close();
+			
+		}catch(SQLException ex) {
+			System.out.println("SQLException : "+ex.getMessage());
+			System.out.println("SQLState : "+((SQLException)ex).getSQLState());
+			System.out.println("VendorError : "+((SQLException)ex).getErrorCode());
+			
 		}
 	}
 	

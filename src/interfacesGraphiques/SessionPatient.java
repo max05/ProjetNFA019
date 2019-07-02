@@ -68,7 +68,7 @@ public class SessionPatient {
 	private Patient unPatient = new Patient(); //Création de l'objet Patient
 	private ArrayList<Medecin> lstMedecin = new ArrayList<Medecin>();//Stock les medecins et permet d'afficher les infos
 	private Connexion uneConnexion = new Connexion();//Fait la connexion avec la bdd
-	private int pId;
+	private int pId , pSs;
 	private String pNom , pPrenom , pTel , pSS;
 	private String pDate;//Création de la variable date
 	private SimpleDateFormat formater = null; //Pour permettre de formater la date
@@ -240,7 +240,7 @@ public class SessionPatient {
 			 
 			 
 			 MethodesSql.ajouterPatient(uneConnexion.getConnection(), pId, pNom, pPrenom, pTel, "", "", "", "", "");
-			 MethodesSql.ajoutConsultation(uneConnexion.getConnection(), pId , pDate );
+			 MethodesSql.ajoutConsultation(uneConnexion.getConnection(), pId );
 
 			}
 		});
@@ -249,11 +249,28 @@ public class SessionPatient {
 		panel_4.add(btnAjouterConsultation);
 		
 		JButton btnModifierConsultation = new JButton("Modifier");
+		btnModifierConsultation.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				pNom = textField_VotreNom.getText();
+				pPrenom = textField_VotrePrenom.getText();
+				pTel = textField_NumTel.getText();
+				pDate = textField_dateNaissPatient.getText();
+				MethodesSql.modifierPatient(uneConnexion.getConnection(), pNom, pPrenom, pTel, "", "", "", "", pId, pSs);
+				MethodesSql.modifierConsultation(uneConnexion.getConnection(), pId, pDate);
+				
+			}
+		});
 		btnModifierConsultation.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnModifierConsultation.setBounds(135, 214, 92, 23);
 		panel_4.add(btnModifierConsultation);
 		
 		JButton btnSupprimerConsultation = new JButton("Supprimer");
+		btnSupprimerConsultation.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MethodesSql.supprimerPatient(uneConnexion.getConnection(), pId);
+				MethodesSql.supprimerConsultation(uneConnexion.getConnection(), pId);
+			}
+		});
 		btnSupprimerConsultation.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnSupprimerConsultation.setBounds(250, 214, 107, 23);
 		panel_4.add(btnSupprimerConsultation);
