@@ -1,6 +1,7 @@
 package fr.gestion.rdv;
 import java.sql.*;
-import java.util.ArrayList;
+import java.sql.Date;
+import java.util.*;
 
 import com.mysql.cj.protocol.Resultset;
 
@@ -30,19 +31,19 @@ public class MethodesSql {
 		}
 	}
 	
-	public static void ajouterPatient(Connection conn , int pSs , String pNom , String pPrenom , String pTel ,  String pMail , String pAdresse , String pVille , String pCp) {
+	public static void ajouterPatient(Connection conn , int pSs , String pNom , String pPrenom , String pTel ,  String pMail , String pAdresse , String pVille , String pCp , String pSexe) {
 		
 		try {
-			prep = conn.prepareStatement("insert into patient (SS , nomP , prenomP , telP , mailP , adresseP , villeP , cpP) values (?,?,?,?,?,?,?,?)");
+			prep = conn.prepareStatement("insert into patient (SS , nomP , prenomP , telP , sexeP , mailP , adresseP , villeP , cpP) values (?,?,?,?,?,?,?,?,?)");
 			prep.setInt(1, pSs);
 			prep.setString(2, pNom);
 			prep.setString(3, pPrenom);
 			prep.setString(4, pTel);
-			//prep.setString(5, pSexe);
-			prep.setString(5, pMail);
-			prep.setString(6, pAdresse);
-			prep.setString(7, pVille);
-			prep.setString(8, pCp);
+			prep.setString(5, pSexe);
+			prep.setString(6, pMail);
+			prep.setString(7, pAdresse);
+			prep.setString(8, pVille);
+			prep.setString(9, pCp);
 			prep.executeUpdate();
 			prep.close();
 			
@@ -210,6 +211,37 @@ public class MethodesSql {
 		try {
 			Statement st = conn.createStatement();
 			res = st.executeQuery("select login , mdp , id_pma from user");
+			
+		}catch(SQLException ex) {
+			System.out.println("SQLException : "+ex.getMessage());
+			System.out.println("SQLState : "+((SQLException)ex).getSQLState());
+			System.out.println("VendorError : "+((SQLException)ex).getErrorCode());
+		} finally {
+			return res;
+		}
+	}
+	
+	public static void ajoutConsultation(Connection conn ,int pId , String pDate) {
+		try {
+			prep = conn.prepareStatement("insert into consultation (id_patient , dateHeure) values (?,?)");
+			prep.setInt(1, pId);
+			prep.setDate(2, Date.valueOf(pDate));
+			prep.executeUpdate();
+			prep.close();
+			
+		}catch(SQLException ex) {
+			System.out.println("SQLException : "+ex.getMessage());
+			System.out.println("SQLState : "+((SQLException)ex).getSQLState());
+			System.out.println("VendorError : "+((SQLException)ex).getErrorCode());
+		}
+	}
+	
+	public static ResultSet afficherConsultation(Connection conn , int pId) {
+		ResultSet res = null;
+		try {
+			Statement st = conn.createStatement();
+			res = st.executeQuery("select nomP , prenomP , c.id_consultation , c.dateHeure from patient inner join consultation c on patient.id_patient = c.id_patient where c.id_consultation ="+pId);
+			
 			
 		}catch(SQLException ex) {
 			System.out.println("SQLException : "+ex.getMessage());

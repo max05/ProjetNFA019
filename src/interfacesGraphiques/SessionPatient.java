@@ -5,6 +5,7 @@ import java.awt.Image;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -19,12 +20,18 @@ import javax.swing.border.TitledBorder;
 import fr.gestion.rdv.Connexion;
 import fr.gestion.rdv.Medecin;
 import fr.gestion.rdv.MethodesSql;
+import fr.gestion.rdv.Patient;
 
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JRadioButton;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.ActionEvent;
+import java.text.*;
 
 /**
  * Fenêtre session patient 
@@ -43,9 +50,9 @@ public class SessionPatient {
 	private JTextField textField_DateConsultation;
 	private JTextField textField_HeureConsultation;
 	private JTextField textField_dateNaissPatient;
-	private JTextField textField_lieuNaissPatient;
-	private JTextField textField_NationPatient;
-	private JTextField textField_email;
+	private JTextField txtLille;
+	private JTextField txtFranaise;
+	private JTextField txtMaxpoulmanegmailcom;
 	private JTextField textField_mutuelle;
 	private JTextField textField_grpSangin;
 	private JTextField textField_poidsPatient;
@@ -57,8 +64,14 @@ public class SessionPatient {
 	private JTextField textField_allergies;
 	private JTextField textField_antecedentFami;
 	private JTextField textField_rechercherDossier;
+	private Medecin unMedecin = new Medecin(); //Création de l'objet Medecin
+	private Patient unPatient = new Patient(); //Création de l'objet Patient
 	private ArrayList<Medecin> lstMedecin = new ArrayList<Medecin>();//Stock les medecins et permet d'afficher les infos
 	private Connexion uneConnexion = new Connexion();//Fait la connexion avec la bdd
+	private int pId;
+	private String pNom , pPrenom , pTel , pSS;
+	private String pDate;//Création de la variable date
+	private SimpleDateFormat formater = null; //Pour permettre de formater la date
 
 	/**
 	 * Launch the application.
@@ -91,16 +104,13 @@ public class SessionPatient {
 		 * Création de la fenêtre patient
 		 */
 		framePatient = new JFrame();
+		framePatient.setTitle("Espace Patient : Poulmane");
 		framePatient.setBounds(100, 100, 800, 600);
 		framePatient.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		framePatient.getContentPane().setLayout(null);
+		framePatient.setLocationRelativeTo(null);
 		JList list_medecins = new JList(); //création de la jlist medecins
-		listeMedecin(list_medecins); //affiche les infos medecin dans la jlist via une méthode
-		
-		JLabel lblEspacePatient = new JLabel("Espace Patient");
-		lblEspacePatient.setFont(new Font("Tahoma", Font.PLAIN, 17));
-		lblEspacePatient.setBounds(20, 11, 136, 24);
-		framePatient.getContentPane().add(lblEspacePatient);
+		listeMedecin(list_medecins);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -146,14 +156,36 @@ public class SessionPatient {
 		Image logoImage3 = new ImageIcon(this.getClass().getResource("/logo_medecin2.jpg")).getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);
 		lbl_logoMedecin.setIcon(new ImageIcon(logoImage3));
 		
-		JLabel label_1 = new JLabel("");
-		label_1.setBounds(0, 48, 56, 16);
-		panel_ficheInfoMedecin.add(label_1);
+		JLabel lblNomMedecin = new JLabel("");
+		lblNomMedecin.setBounds(12, 27, 156, 16);
+		panel_ficheInfoMedecin.add(lblNomMedecin);
 		
-		JLabel lblInfoMedecin = new JLabel("");
-		lblInfoMedecin.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblInfoMedecin.setBounds(13, 37, 207, 127);
-		panel_ficheInfoMedecin.add(lblInfoMedecin);
+		JLabel lblPrenomMedecin = new JLabel("");
+		lblPrenomMedecin.setBounds(12, 56, 146, 16);
+		panel_ficheInfoMedecin.add(lblPrenomMedecin);
+		
+		JLabel lblTelMedecin = new JLabel("");
+		lblTelMedecin.setBounds(12, 87, 146, 16);
+		panel_ficheInfoMedecin.add(lblTelMedecin);
+		
+		JLabel lblMailMedecin = new JLabel("");
+		lblMailMedecin.setBounds(12, 115, 146, 16);
+		panel_ficheInfoMedecin.add(lblMailMedecin);
+		
+		list_medecins.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent arg0) {
+				int i = list_medecins.getSelectedIndex();
+				unMedecin = lstMedecin.get(i);
+				pId = unPatient.getId();
+				lblNomMedecin.setText("Nom : " +unMedecin.getNom());
+				lblPrenomMedecin.setText("Prénom : " + unMedecin.getPrenom());
+				lblTelMedecin.setText("Téléphone : "+unMedecin.getTel());
+				lblMailMedecin.setText("Mail : "+unMedecin.getMail());
+				
+				
+				
+			}
+		});
 
 		JButton btnRechercherConsultation = new JButton("Rechercher");
 		btnRechercherConsultation.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -198,6 +230,20 @@ public class SessionPatient {
 		panel_4.add(lblHeureSouhaite);
 		
 		JButton btnAjouterConsultation = new JButton("Ajouter");
+		btnAjouterConsultation.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			 pId = Integer.valueOf(textField_NumSS.getText());
+			 pNom = textField_VotreNom.getText();
+			 pPrenom = textField_VotrePrenom.getText();
+			 pTel = textField_NumTel.getText();
+			 pDate = textField_dateNaissPatient.getText();
+			 
+			 
+			 MethodesSql.ajouterPatient(uneConnexion.getConnection(), pId, pNom, pPrenom, pTel, "", "", "", "", "");
+			 MethodesSql.ajoutConsultation(uneConnexion.getConnection(), pId , pDate );
+
+			}
+		});
 		btnAjouterConsultation.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnAjouterConsultation.setBounds(10, 214, 103, 23);
 		panel_4.add(btnAjouterConsultation);
@@ -305,28 +351,30 @@ public class SessionPatient {
 		panel_5.add(lblPoids);
 		
 		textField_dateNaissPatient = new JTextField();
+		textField_dateNaissPatient.setText("21/04/1994");
 		textField_dateNaissPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		textField_dateNaissPatient.setColumns(10);
 		textField_dateNaissPatient.setBounds(147, 56, 173, 24);
 		panel_5.add(textField_dateNaissPatient);
 		
-		textField_lieuNaissPatient = new JTextField();
-		textField_lieuNaissPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		textField_lieuNaissPatient.setColumns(10);
-		textField_lieuNaissPatient.setBounds(147, 91, 173, 24);
-		panel_5.add(textField_lieuNaissPatient);
+		txtLille = new JTextField();
+		txtLille.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		txtLille.setColumns(10);
+		txtLille.setBounds(147, 91, 173, 24);
+		panel_5.add(txtLille);
 		
-		textField_NationPatient = new JTextField();
-		textField_NationPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		textField_NationPatient.setColumns(10);
-		textField_NationPatient.setBounds(147, 126, 173, 24);
-		panel_5.add(textField_NationPatient);
+		txtFranaise = new JTextField();
+		txtFranaise.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		txtFranaise.setColumns(10);
+		txtFranaise.setBounds(147, 126, 173, 24);
+		panel_5.add(txtFranaise);
 		
-		textField_email = new JTextField();
-		textField_email.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		textField_email.setColumns(10);
-		textField_email.setBounds(147, 161, 173, 24);
-		panel_5.add(textField_email);
+		txtMaxpoulmanegmailcom = new JTextField();
+		txtMaxpoulmanegmailcom.setText("max@gmail.com");
+		txtMaxpoulmanegmailcom.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		txtMaxpoulmanegmailcom.setColumns(10);
+		txtMaxpoulmanegmailcom.setBounds(147, 161, 173, 24);
+		panel_5.add(txtMaxpoulmanegmailcom);
 		
 		textField_mutuelle = new JTextField();
 		textField_mutuelle.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -335,6 +383,7 @@ public class SessionPatient {
 		panel_5.add(textField_mutuelle);
 		
 		JRadioButton radioBtnHomme = new JRadioButton("H");
+		radioBtnHomme.setSelected(true);
 		radioBtnHomme.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		radioBtnHomme.setBounds(147, 18, 62, 30);
 		panel_5.add(radioBtnHomme);
@@ -490,6 +539,21 @@ public class SessionPatient {
 		btnRechercherDossier.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btnRechercherDossier.setBounds(570, 444, 155, 30);
 		panel_1.add(btnRechercherDossier);
+		
+		JButton btnHome = new JButton("");
+		btnHome.setBounds(718, 13, 52, 25);
+        framePatient.getContentPane().add(btnHome);
+        Image iconHome = new ImageIcon(this.getClass().getResource("/iconHome3.png")).getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT);
+        btnHome.setIcon(new ImageIcon(iconHome));
+		btnHome.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Login login = new Login();
+				login.frame.setVisible(true);
+				framePatient.setVisible(false);
+			}
+		});
+		btnHome.setBounds(705, 13, 65, 25);
+		framePatient.getContentPane().add(btnHome);
 	}
 
 	/**

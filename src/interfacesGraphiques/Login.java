@@ -32,11 +32,12 @@ import java.awt.event.ActionEvent;
  */
 public class Login {
 
-	private JFrame frame; //création de la variable jframe
+	public JFrame frame; //création de la variable jframe
 	private JTextField textField;
 	private JPasswordField passwordFieldAuthentif;
 	private Connexion uneConnexion = new Connexion();
 	private int idPma; //variable pour récuperer l'id utilisateur
+	private String pLogin;
 
 	/**
 	 * Launch the application.
@@ -69,11 +70,13 @@ public class Login {
 		 * Création de la fenêtre 
 		 */
 		frame = new JFrame(); 
+		frame.setTitle("Login by Maxime and Eric");
 		frame.getContentPane().setBackground(new Color(153, 153, 255));
 		frame.getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 14));
 		frame.setBounds(100, 100, 800, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setLocationRelativeTo(null);
 
 		/**
 		 * Label merci de vous authentifier
@@ -154,11 +157,14 @@ public class Login {
 				try {
 					while (res.next()) {
 						idPma = res.getInt("id_pma"); //récupérer l'id Patient Medecin Admin
+						pLogin = res.getString("login"); //récupérer le login de l'utilisateur
+						
 
 					}
+					String textLogin = textField.getText();
 
 					if (patientButton.isSelected()) {
-						if (idPma > 1 || idPma < 1000) {
+						if (idPma > 1 || idPma < 1000 && textLogin == pLogin) { //si l'id pma est supérieur à 1 ou inférieur à 1000 et que le textfield est égale au login utilisateur
 							try {
 								/**
 								 * Si le bouton patient est sélectionné on affiche la fenêtre correspond

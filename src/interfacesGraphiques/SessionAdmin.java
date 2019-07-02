@@ -13,6 +13,7 @@ import javax.swing.JTextField;
 import javax.swing.ListModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -37,7 +38,11 @@ import fr.gestion.rdv.Patient;
 
 import javax.swing.JRadioButton;
 import javax.swing.AbstractListModel;
+import javax.swing.ButtonGroup;
+
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.border.EtchedBorder;
 
 /**
@@ -72,6 +77,7 @@ public class SessionAdmin {
 	private Medecin unMedecin;
 	private Patient unPatient;
 	private int pSS, pId, pSpecialite;
+	private String pSexe;
 	private String pNom, pPrenom, pTel, pEmail, pAdresse, pVille, pCp;
 	private JTextField textField_telMedecin_1;
 
@@ -105,11 +111,21 @@ public class SessionAdmin {
 		frmEspaceAdministrateur.setTitle("Espace administrateur");
 		frmEspaceAdministrateur.setBounds(100, 100, 800, 600);
 		frmEspaceAdministrateur.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmEspaceAdministrateur.getContentPane().setLayout(null);
 		frmEspaceAdministrateur.setLocationRelativeTo(null);
 		JList list_2 = new JList(); //liste des medecins
 		JComboBox comboBox_medecin = new JComboBox(); //comboBox qui contient les spécialités des medecins
 		listeMedecin(list_2); //méthode qui affiche la liste des medecins via requête
+		JRadioButton rdbtnSexeH = new JRadioButton("H");
+		JRadioButton rdbtnSexeF = new JRadioButton("F");
+		
+		/**
+		 * On groupe les boutons pour éviter de selectionner deux boutons en même temps
+		 */
+		ButtonGroup group = new ButtonGroup();
+		group.add(rdbtnSexeF);
+		group.add(rdbtnSexeH);
+		rdbtnSexeF.setText("F");
+		rdbtnSexeH.setText("H");
 
 		/**
 		 * méthode qui permet de sélectionner un medecin via le clic de la souris et
@@ -127,13 +143,15 @@ public class SessionAdmin {
 				textField_mailMedecin.setText(unMedecin.getMail());
 				textField_villeMedecin.setText(unMedecin.getVille());
 				textField_telMedecin_1.setText(unMedecin.getTel());
+				
 
 			}
 		}); //fin de la méthode
+		frmEspaceAdministrateur.getContentPane().setLayout(null);
 		
 		JTabbedPane tabbedPane_1 = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		tabbedPane_1.setBounds(33, 38, 722, 514);
+		tabbedPane_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		frmEspaceAdministrateur.getContentPane().add(tabbedPane_1);
 
 
@@ -424,8 +442,15 @@ public class SessionAdmin {
 				pAdresse = textField_AdressPatient.getText();
 				pVille = textField_VillePatient.getText();
 				pCp = textField_CodePostPatient.getText();
+				if(rdbtnSexeF.isSelected()) {
+					pSexe = "F";
+					
+				}
+				if(rdbtnSexeH.isSelected()) {
+					pSexe = "H";
+				}
 				MethodesSql.ajouterPatient(uneConnexion.getConnection(), pSS, pNom, pPrenom, pTel, pEmail, pAdresse,
-						pVille, pCp);
+						pVille, pCp , pSexe);
 
 				listePatient(list_1);
 				effacerText();
@@ -474,15 +499,20 @@ public class SessionAdmin {
 		btnSupprimerPatient.setBounds(455, 220, 110, 30);
 		panel.add(btnSupprimerPatient);
 
-		JRadioButton rdbtnSexeH = new JRadioButton("H");
+		/**
+		 * Bouton sexe Homme
+		 */
 		rdbtnSexeH.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		rdbtnSexeH.setBounds(121, 182, 55, 30);
 		panel.add(rdbtnSexeH);
 
-		JRadioButton rdbtnSexeF = new JRadioButton("F");
+		/**
+		 * Bouton sexe Femme
+		 */
 		rdbtnSexeF.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		rdbtnSexeF.setBounds(211, 182, 55, 30);
 		panel.add(rdbtnSexeF);
+				
 
 		textField_NumSecuPatient = new JTextField();
 		textField_NumSecuPatient.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -578,6 +608,20 @@ public class SessionAdmin {
 		panel_ListePatient.add(scrollPane_listPatients);
 
 		scrollPane_listPatients.setViewportView(list_1);
+		
+		JButton btnHome = new JButton("");
+		btnHome.setBounds(719, 13, 63, 25);
+        frmEspaceAdministrateur.getContentPane().add(btnHome);
+        Image iconHome = new ImageIcon(this.getClass().getResource("/iconHome3.png")).getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT);
+        btnHome.setIcon(new ImageIcon(iconHome));
+		btnHome.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Login login = new Login();
+				login.frame.setVisible(true);
+				frmEspaceAdministrateur.setVisible(false);
+			}
+		});
+		frmEspaceAdministrateur.getContentPane().add(btnHome);
 	}
 
 	/**
@@ -616,7 +660,6 @@ public class SessionAdmin {
 	private void listePatient(JList liste1) {
 		lstPatients.clear();
 		ResultSet res = MethodesSql.afficherPatients(uneConnexion.getConnection());
-
 		try {
 			while (res.next()) {
 
@@ -654,6 +697,7 @@ public class SessionAdmin {
 		textField_PrenomPatient.setText("");
 		textField_TelPatient.setText("");
 		textField_VillePatient.setText("");
+		
 	}
 
 	/**
