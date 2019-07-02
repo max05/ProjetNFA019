@@ -81,15 +81,6 @@ public class SessionAdmin {
 	private String pNom, pPrenom, pTel, pEmail, pAdresse, pVille, pCp;
 	private JTextField textField_telMedecin_1;
 
-	/**
-	 * Launch the application.
-	 */
-	/*
-	 * public static void main(String[] args) { EventQueue.invokeLater(new
-	 * Runnable() { public void run() { try { SessionAdmin window = new
-	 * SessionAdmin(); window.frmEspaceAdministrateur.setVisible(true); } catch
-	 * (Exception e) { e.printStackTrace(); } } }); }
-	 */
 
 	/**
 	 * Create the application.

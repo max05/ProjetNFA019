@@ -73,21 +73,6 @@ public class SessionPatient {
 	private String pDate;//Création de la variable date
 	private SimpleDateFormat formater = null; //Pour permettre de formater la date
 
-	/**
-	 * Launch the application.
-	 */
-	/*public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					SessionPatient windowsPatient = new SessionPatient();
-					windowsPatient.framePatient.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
 
 	/**
 	 * Create the application.
@@ -172,6 +157,9 @@ public class SessionPatient {
 		lblMailMedecin.setBounds(12, 115, 146, 16);
 		panel_ficheInfoMedecin.add(lblMailMedecin);
 		
+		/**
+		 * Affiche la liste des medecins
+		 */
 		list_medecins.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent arg0) {
 				int i = list_medecins.getSelectedIndex();
@@ -229,6 +217,9 @@ public class SessionPatient {
 		lblHeureSouhaite.setBounds(10, 186, 129, 24);
 		panel_4.add(lblHeureSouhaite);
 		
+		/**
+		 * Ajout d'un patient
+		 */
 		JButton btnAjouterConsultation = new JButton("Ajouter");
 		btnAjouterConsultation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -248,6 +239,9 @@ public class SessionPatient {
 		btnAjouterConsultation.setBounds(10, 214, 103, 23);
 		panel_4.add(btnAjouterConsultation);
 		
+		/**
+		 * Bouton modification du patient 
+		 */
 		JButton btnModifierConsultation = new JButton("Modifier");
 		btnModifierConsultation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -317,12 +311,11 @@ public class SessionPatient {
 		Image logoCalendar = new ImageIcon(this.getClass().getResource("/calendar_icon.png")).getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT);
 		lbl_clalendar.setIcon(new ImageIcon(logoCalendar));
 		
-		/*JLabel logoImage = new JLabel("");
+		JLabel logoImage = new JLabel("");
 		logoImage.setBounds(31, 11, 113, 104);
         Image logoImage1 = new ImageIcon(this.getClass().getResource("/key-lock-icon.png")).getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);
         logoImage.setIcon(new ImageIcon(logoImage1));
       
-		frame.getContentPane().add(logoImage);*/
 		
 		//---------------------------------
 		JPanel panel_1 = new JPanel();
@@ -562,6 +555,10 @@ public class SessionPatient {
         framePatient.getContentPane().add(btnHome);
         Image iconHome = new ImageIcon(this.getClass().getResource("/iconHome3.png")).getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT);
         btnHome.setIcon(new ImageIcon(iconHome));
+        
+        /**
+         * Action au clic qui permet de se déconnecter et revenir au menu login
+         */
 		btnHome.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Login login = new Login();

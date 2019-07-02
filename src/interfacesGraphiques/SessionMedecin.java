@@ -64,22 +64,6 @@ public class SessionMedecin {
 	private int pId;
 
 	/**
-	 * Launch the application.
-	 */
-	/*public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					SessionMedecin window = new SessionMedecin();
-					window.frameMedecin.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
-
-	/**
 	 * Create the application.
 	 */
 	public SessionMedecin() {
@@ -104,6 +88,10 @@ public class SessionMedecin {
 		JList listConsultations = new JList();
 		listePatient(listPatients);//affiche les patients via une méthode
 		
+		/**
+		 * Action au moment de sélectionner un patient va récupérer les infos et 
+		 * les mettres dans les textfield
+		 */
 		listPatients.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent arg0) {
 				int i = listPatients.getSelectedIndex();
@@ -251,15 +239,6 @@ public class SessionMedecin {
 		
 		
 		listConsultations.setFont(new Font("Tahoma", Font.PLAIN, 14));
-//		listConsultations.setModel(new AbstractListModel() {
-//			String[] values = new String[] {"f", "f", "f", "f", "f", "f", "f", "f", "f", "f", "f", "f", "f", "f"};
-//			public int getSize() {
-//				return values.length;
-//			}
-//			public Object getElementAt(int index) {
-//				return values[index];
-//			}
-//		});
 		scrollPane_1.setViewportView(listConsultations);
 		
 		
@@ -294,6 +273,7 @@ public class SessionMedecin {
 		panel_1.add(scrollPane_4);
 		
 		JList listPatient = new JList();
+		listePatient(listPatient);
 		scrollPane_4.setViewportView(listPatient);
 		
 		JPanel panel_2 = new JPanel();
@@ -520,6 +500,10 @@ public class SessionMedecin {
         frameMedecin.getContentPane().add(btnHome);
         Image iconHome = new ImageIcon(this.getClass().getResource("/iconHome3.png")).getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT);
         btnHome.setIcon(new ImageIcon(iconHome));
+        
+        /**
+         * Action au clic pour se déconnecter et revenir dans le menu login
+         */
 		btnHome.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Login login = new Login();
@@ -563,6 +547,11 @@ public class SessionMedecin {
 		}
 	}
 	
+	/**
+	 * Affiche la liste des consultations
+	 * @param liste2
+	 * @param pId
+	 */
 	private void listeConsultation(JList liste2 , int pId) {
 		ResultSet resC = MethodesSql.afficherConsultation(uneConnexion.getConnection() , pId);
 		try {
